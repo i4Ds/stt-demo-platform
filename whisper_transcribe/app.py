@@ -16,8 +16,7 @@ def transcribe(inputs, task):
         )
     pred_sub = audio_transcriber.transcribe(inputs)
     # Extract the transcription from the output
-    transcription = pred_sub["text"]
-    return transcription
+    return pred_sub.to_string(format_="srt")
 
 
 demo = gr.Blocks()
@@ -25,13 +24,10 @@ demo = gr.Blocks()
 mf_transcribe = gr.Interface(
     fn=transcribe,
     inputs=[
-        gr.inputs.Audio(source="microphone", type="filepath", optional=True),
-        gr.inputs.Radio(
-            ["transcribe", "translate"], label="Task", default="transcribe"
-        ),
+        gr.Audio(sources="microphone", type="filepath"),
+        gr.Radio(["transcribe"], label="Task", value="transcribe"),
     ],
     outputs="text",
-    layout="horizontal",
     theme="huggingface",
     title="Swiss German Whisper",
     description=(
@@ -46,15 +42,10 @@ mf_transcribe = gr.Interface(
 file_transcribe = gr.Interface(
     fn=transcribe,
     inputs=[
-        gr.inputs.Audio(
-            source="upload", type="filepath", optional=True, label="Audio file"
-        ),
-        gr.inputs.Radio(
-            ["transcribe", "translate"], label="Task", default="transcribe"
-        ),
+        gr.Audio(sources="upload", type="filepath", label="Audio file"),
+        gr.Radio(["transcribe"], label="Task", value="transcribe"),
     ],
     outputs="text",
-    layout="horizontal",
     theme="huggingface",
     title="Swiss German Whisper",
     description=(
@@ -72,4 +63,4 @@ with demo:
         ["Microphone", "Audio file", "YouTube"],
     )
 
-demo.launch(enable_queue=True)
+demo.launch(server_name="127.0.0.1", server_port=7860, share=True)

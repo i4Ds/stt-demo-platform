@@ -1,0 +1,6 @@
+whisperx
+faster-whisper
+pysubs2
+moviepy
+gradio
+torch

@@ -38,6 +38,7 @@ class AudioTranscriber:
         self.transcribe_model = whisperx.load_model(
             "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v2",
             self.device,
+            compute_type="float16" if torch.cuda.is_available() else "float32",
         )
         self.language = language
         self.align_model, self.metadata = whisperx.load_align_model(
