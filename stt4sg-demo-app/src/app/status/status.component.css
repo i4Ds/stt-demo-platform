@@ -1,0 +1,99 @@
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(249, 249, 249);
+}
+
+.panel {
+    border-radius: 8px;
+    width: 480px;
+    height: 280px;
+    perspective: 1000px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%);
+    position: fixed;
+    border: 1px solid rgba(255, 255, 255, .9);
+    background-color: rgba(255, 255, 255, .9);
+    color: #767573;
+    font-weight: 600;
+}
+
+.checkmark {
+    margin: 20px auto;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    text-align: center;
+}
+
+.status-text {
+    text-align: center;
+}
+
+.download-area {
+    text-align: center;
+}
+
+p.small {
+    font-weight: 400 !important;
+    font-size: 14px !important;
+}
+
+.button {
+    background-color: #72529c;
+    border: none;
+    color: white;
+    padding: 6px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+.loader {
+  margin: auto auto;
+  font-size: 3px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(254, 230, 55, 0.2);
+  border-right: 1.1em solid rgba(254, 230, 55, 0.2);
+  border-bottom: 1.1em solid rgba(254, 230, 55, 0.2);
+  border-left: 1.1em solid #fee637;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

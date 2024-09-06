@@ -1,0 +1,223 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons|Roboto';
+
+body {
+  font-family: Raleway, Raleway, sans-serif;
+}
+.flip-card {
+  background-color: transparent;
+  width: 480px;
+  height: 280px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+.flip-card-front,
+.flip-card-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  padding-left: 10px;
+}
+
+.flip-card-front svg {
+  background: #FEE637;
+  border-radius: 50%;
+  padding: 25px;
+  width: 70px;
+  cursor: pointer;
+}
+
+.flip-card-front svg path {
+  fill: white;
+}
+
+.flip-card-front {
+  transform:rotateY(0deg);
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+.flipped {
+  transform: rotateY(180deg);
+}
+
+#instructions {
+  margin-bottom: 10px;
+  color: #767573;
+}
+
+.frontcardtext {
+  margin-top: 10px;
+  color: #767573;
+  font-weight: 600;
+}
+
+.recording {
+  animation: recording 2s infinite ease-in-out;
+  position: relative;
+}
+
+@keyframes recording {
+  from {
+    transform: scale( 1.1 );
+  }
+
+  50% {
+    transform: none;
+  }
+
+  to {
+    transform: scale( 1.1 );
+  }
+}
+
+.loading {
+  animation: loading 1.5s infinite;
+  position: relative;
+}
+
+@keyframes loading {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.flip-card-back header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 420px;
+  gap: 10px;
+  margin-top: 17px;
+}
+.flip-card-back header #back {
+  cursor: pointer;
+  margin: 0;
+}
+
+.headertext {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+  text-align: left;
+  position: relative;
+  flex-direction: column;
+  display: block;
+}
+
+#mini-icon {
+  background: #FEE637;
+  padding: 5px;
+  width: 10px;
+  border-radius: 50%;
+  fill: white;
+}
+
+.resetrecord  {
+  justify-self: right;
+}
+
+.flip-card-back header span {
+  display: flex;
+  align-items: center;
+}
+
+/*.record_canvas {*/
+/*  width: 60px;*/
+/*  height: 100px;*/
+/*  display: inline-block;*/
+
+/*}*/
+
+#result {
+  width: 420px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  margin-outside: 10px;
+  position: relative;
+  flex-direction: column;
+  display: block;
+  height: 150px;
+  color: #000000;
+  border: 0;
+  border-bottom: 2px solid #DEDED9;
+  padding-top: 20px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 25px;
+  width: 420px;
+  padding: 15px;
+}
+
+.ratingtext {
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
+  margin-outside: 10px;
+  position: relative;
+  flex-direction: column;
+  display: block;
+  width: 420px;
+  line-height: 122%;
+  padding-top: 8px;
+  color: #4C4C4C;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  margin-left: 2px;
+}
+
+.ratinglabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4C4C4C;
+}
+
+.fa-star:before {
+  content: "\f005";
+  color: #FEE637;
+}
+.fa-star-o:before {
+  content: "\f006";
+  color: #4c4c4c;
+}
+
+@media only screen and (max-width: 600px) {
+  .flip-card {width: 360px; height: 210px}
+  .flip-card-front svg {width:50px}
+  .frontcardtext{font-size: 13px}
+  .flip-card-back header {width: 300px}
+  .rating {width: 300px; font-size: 10px}
+  .ratingtext {width: 300px; font-size: 10px}
+  .ratinglabel{font-size: 10px}
+  #result {
+    width: 300px;
+    font-size: 14px;
+  }
+}

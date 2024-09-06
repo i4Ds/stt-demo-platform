@@ -1,0 +1,33 @@
+
+
+<div class="main-container">
+    <div class="panel">
+        
+        <div class="head-top">
+            <p>Upload audio or video file</p>
+            <p class="small">Allowed extension: .wav, .wave, .mp3, .m4a, .mp4, .wma | Max. file size: 500 MB</p>
+        </div>
+
+        <div class="content">
+            <input type="file" class="file-input" (change)="onFileSelected($any($event.target).files)" #fileUpload>
+
+            <div class="file-upload">
+                {{fileName || "No file chosen"}}
+                <button color="primary" class="upload-btn" (click)="fileUpload.click()">
+                    Select File
+                </button>
+            </div>
+
+            <div class="progress">
+                <mat-progress-bar class="progress-bar" mode="determinate"
+                                [value]="uploadProgress" *ngIf="uploadProgress">
+                </mat-progress-bar>
+            </div>
+
+            <button mat-raised-button color="accent" (click)="opendialog()">
+                Read Disclaimer
+            </button>
+        </div>
+        
+    </div>
+</div>

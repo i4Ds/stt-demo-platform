@@ -1,0 +1,18 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons|Roboto';
+
+.mat-grid-list {
+  width: 80vw;
+}
+.mat-mdc-card-header {
+  flex-direction: row-reverse;
+  padding-bottom: 16px;
+}
+.mat-mdc-card-header ::ng-deep .mat-mdc-card-header-text .mat-mdc-card-title {
+  height: 100%;
+  line-height: 2.5rem;
+  --mdc-typography-headline6-font-size: 30px;
+}
+.mat-mdc-card-avatar {
+  overflow: hidden;
+  margin-bottom: 0px;
+}

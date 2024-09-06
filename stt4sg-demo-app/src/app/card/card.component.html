@@ -1,0 +1,79 @@
+ <body>
+  <div class="flip-card">
+    <div class="flip-card-inner" [ngClass]="toggleProperty ? 'flipped' : ''">
+      <div *ngIf="!hasRecording; else cardBack" class="flip-card-front">
+        <div id="instructions"></div>
+        <svg *ngIf="microphoneok && !startedRecording; else stoptherecord" (click)="startRecording()"
+             id="icon" x="0px" y="0px" viewBox="0 0 230.639 230.639">
+                    <g>
+                        <path
+                          d="M184.777,125.36c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,30.028-24.43,54.458-54.458,54.458   s-54.458-24.43-54.458-54.458c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,35.765,27.174,65.294,61.958,69.047v21.232H89.35   c-4.142,0-7.5,3.358-7.5,7.5s3.358,7.5,7.5,7.5h51.939c4.142,0,7.5-3.358,7.5-7.5s-3.358-7.5-7.5-7.5H122.82v-21.232   C157.603,190.654,184.777,161.125,184.777,125.36z" />
+                      <path
+                        d="M115.32,171.112c23.408,0,42.451-19.043,42.451-42.451v-86.21C157.771,19.043,138.728,0,115.32,0   S72.869,19.043,72.869,42.451v86.21C72.869,152.069,91.912,171.112,115.32,171.112z M87.869,42.451   C87.869,27.314,100.183,15,115.32,15s27.451,12.314,27.451,27.451v86.21c0,15.137-12.314,27.451-27.451,27.451   s-27.451-12.314-27.451-27.451V42.451z" />
+                    </g>
+                </svg>
+        <div class="frontcardtext" *ngIf="!startedRecording">
+          Aufnahme starten
+          <button mat-raised-button color="accent" (click)="opendialog()">
+            Read Disclaimer
+        </button>
+        </div>
+        <ng-template #stoptherecord>
+          <svg *ngIf="startedRecording" (click)="send();" class="recording"
+               id="icon" x="0px" y="0px" viewBox="0 0 230.639 230.639">
+                    <g>
+                        <path
+                          d="M184.777,125.36c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,30.028-24.43,54.458-54.458,54.458   s-54.458-24.43-54.458-54.458c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,35.765,27.174,65.294,61.958,69.047v21.232H89.35   c-4.142,0-7.5,3.358-7.5,7.5s3.358,7.5,7.5,7.5h51.939c4.142,0,7.5-3.358,7.5-7.5s-3.358-7.5-7.5-7.5H122.82v-21.232   C157.603,190.654,184.777,161.125,184.777,125.36z" />
+                      <path
+                        d="M115.32,171.112c23.408,0,42.451-19.043,42.451-42.451v-86.21C157.771,19.043,138.728,0,115.32,0   S72.869,19.043,72.869,42.451v86.21C72.869,152.069,91.912,171.112,115.32,171.112z M87.869,42.451   C87.869,27.314,100.183,15,115.32,15s27.451,12.314,27.451,27.451v86.21c0,15.137-12.314,27.451-27.451,27.451   s-27.451-12.314-27.451-27.451V42.451z" />
+                    </g>
+                </svg>
+        </ng-template>
+        <div class="frontcardtext" *ngIf="startedRecording">
+          {{timeRecorded | number: '1.1-1'}} Sekunden<br />
+          <span style="font-weight: normal;">Erneut klicken um die Aufnahme zu beenden</span>
+        </div>
+      </div>
+
+      <ng-template #cardBack>
+        <div class="flip-card-front">
+          <div id="instructions"></div>
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class="loading" viewBox="0 0 48 48">
+            <g>
+              <path d="M31.55 9.6 24.1 17.05 22.1 15.05 26.05 11.1H24Q18.65 11.1 14.825 14.925Q11 18.75 11 24.1Q11 25.55 11.275 26.85Q11.55 28.15 11.95 29.3L9.8 31.45Q8.8 29.65 8.4 27.825Q8 26 8 24.1Q8 17.55 12.725 12.825Q17.45 8.1 24 8.1H26.15L22.15 4.1L24.1 2.15ZM16.35 38.55 23.8 31.1 25.75 33.05 21.75 37.05H24Q29.35 37.05 33.175 33.225Q37 29.4 37 24.05Q37 22.6 36.75 21.3Q36.5 20 36 18.85L38.15 16.7Q39.15 18.5 39.575 20.325Q40 22.15 40 24.05Q40 30.6 35.275 35.325Q30.55 40.05 24 40.05H21.75L25.75 44.05L23.8 46Z"/>
+            </g>
+          </svg>
+          <div class="frontcardtext">Aufnahme wird verarbeitet...</div>
+        </div>
+        <div class="flip-card-back">
+          <header>
+            <div class="body headertext">Resultat:</div>
+            <span class="resetrecord" (click)="resetRecording()">
+                <div class="body headertext">Neue Aufnahme&nbsp;</div>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     id="mini-icon" x="0px" y="0px" viewBox="0 0 230.639 230.639">
+                              <g>
+                                  <path
+                                    d="M184.777,125.36c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,30.028-24.43,54.458-54.458,54.458   s-54.458-24.43-54.458-54.458c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5c0,35.765,27.174,65.294,61.958,69.047v21.232H89.35   c-4.142,0-7.5,3.358-7.5,7.5s3.358,7.5,7.5,7.5h51.939c4.142,0,7.5-3.358,7.5-7.5s-3.358-7.5-7.5-7.5H122.82v-21.232   C157.603,190.654,184.777,161.125,184.777,125.36z" />
+                                <path
+                                  d="M115.32,171.112c23.408,0,42.451-19.043,42.451-42.451v-86.21C157.771,19.043,138.728,0,115.32,0   S72.869,19.043,72.869,42.451v86.21C72.869,152.069,91.912,171.112,115.32,171.112z M87.869,42.451   C87.869,27.314,100.183,15,115.32,15s27.451,12.314,27.451,27.451v86.21c0,15.137-12.314,27.451-27.451,27.451   s-27.451-12.314-27.451-27.451V42.451z" />
+                              </g>
+                          </svg>
+              </span>
+          </header>
+          <div id="result">{{result?.transcription}}</div>
+          <div class="body ratingtext">Bitte geben Sie uns Rückmeldung über die Qualität der Übersetzung und teilen Sie Ihre Aufnahme mit uns, damit wir unsere Spracherkennung weiter verbessern können.
+           </div>
+          <form class="rating">
+            <div class="body ratinglabel"> Bewerten und teilen:</div>
+            <div>
+              <label *ngFor="let _ of [].constructor(5); index as i" (mouseenter)="ratingHover = i + 1" (mouseleave)="ratingHover = rating">
+                <input type="radio" name="stars" [value]="i + 1" (change)="rating = i + 1; sendRating();" />
+                <span class="fa icon" [class]="rating >= i + 1 || ratingHover >=i + 1 ? 'fa-star' : 'fa-star-o'"></span>
+              </label>
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </div>
+  </div>

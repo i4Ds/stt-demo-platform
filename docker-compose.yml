@@ -1,0 +1,143 @@
+services:
+  tts:
+     container_name: tts
+     build: /srv/tts-demo/tts
+     restart: unless-stopped
+     ports:
+       - "8080:8080"
+     mem_limit: 8G
+  long_api_server:
+    build: ./stt_long_whisper_api/platform
+    container_name: long-api
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
+    command: "gunicorn --workers 4 --bind 0.0.0.0:5050 --timeout 120 'server.app:create_app()'"
+    volumes:
+      - "/data/uploads:/media_root"
+    environment:
+      - "MEDIA_ROOT=/media_root"
+  long_api_worker:
+    build: ./stt_long_whisper_api/platform
+    container_name: long-api-worker
+    restart: unless-stopped
+    depends_on:
+      - redis
+    command: rq worker --name worker --url redis://redis:6379/0
+    volumes:
+      - "/data/uploads:/media_root"
+    environment:
+      - "MEDIA_ROOT=/media_root"
+    shm_size: "8gb"
+  redis:
+    image: redis:7.2.3-alpine
+  long_prediction_stt_model:
+    build: ./stt_long_whisper_api/platform
+    container_name: api2
+    restart: unless-stopped
+    command: uvicorn whisper.main:app --host 0.0.0.0 --port 5000
+    volumes:
+      - "/data/uploads:/media_root"
+      - "/data/whisper_models:/whisper_models"
+    environment:
+      - "MEDIA_ROOT=/media_root"
+      - "MODEL_FOLDER=/whisper_models"
+      - "MODEL=whisper4sg-srg-v2-full-mc-de-sg-corpus-v2"
+      - "QUANTIZATION=int8"
+      - "WHISPERMODELTYPE=whisperx"
+    ports:
+      - "5002:5000"
+  api:
+    build: ./stt_prediction_api
+    container_name: api
+    restart: unless-stopped
+    volumes:
+      - "/data:/data"
+    environment:
+      - "CONFIG_PATH=/data/wav2vec/configs/model/wav2vec/swissgerman_wav2vec_seq2seq_lm.yaml"
+#      - "CONFIG_PATH=/data/wav2vec/configs/model/wav2vec/swissgerman_wav2vec_300m.yaml"
+      - "RESTRICTED_DEMO_ACCESS=false"
+    ports:
+      - "5000:5000"
+  stt_api:
+    build: ./stt_api
+    container_name: stt_api
+    restart: unless-stopped
+    command: "gunicorn stt_api.wsgi:application --bind 0.0.0.0:8000"
+    environment:
+      - "SECRET_KEY=*6=7b^_24d)#7u*91w()!47g5snncjh)=1new9st@=02p_@i&s"
+      - "MEDIA_ROOT=/media_root"
+      - "DJANGO_ALLOWED_HOSTS=.fhnw.ch localhost 127.0.0.1 [::1]"
+      - "DJANGO_SETTINGS_MODULE=stt_api.settings.production"
+      - "DB_HOST=mongodb"
+      - "DB_PORT=27017"
+      - "DB_USERNAME=sg4mongo"
+      - "DB_PASSWORD=h8pCJthItB3bw464"
+    volumes:
+      - "/data/uploads:/media_root"
+    ports:
+      - 8000:8000
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - "/data/mongodb:/data"
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=sg4mongo"
+      - "MONGO_INITDB_ROOT_PASSWORD=h8pCJthItB3bw464"
+    ports:
+      - "27017:27017"
+  db:
+    env_file:
+      - ./db.env
+    image: mysql:latest
+    restart: always
+    environment:
+     - MYSQL_ROOT_PASSWORD=sg4matomo
+    cap_add:
+      - SYS_NICE
+    volumes:
+     - mysqldb:/var/lib/mysql
+  matomo:
+    image: matomo:fpm
+    container_name: matomo
+    restart: always
+    depends_on:
+      - db
+    links:
+      - db
+    volumes:
+     - matomo:/var/www/html
+    environment:
+      - MATOMO_DATABASE_HOST=db
+      - PHP_MEMORY_LIMIT=2048M
+    env_file:
+      - ./db.env
+  nginx:
+    build: ./stt4sg-demo-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /data/nginx:/etc/nginx/conf.d
+      - /data/certbot/conf:/etc/letsencrypt
+      - /data/certbot/www:/var/www/certbot
+    links:
+      - matomo
+    volumes_from:
+      - matomo
+    depends_on:
+      - matomo
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - /data/certbot/conf:/etc/letsencrypt
+      - /data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  mysqldb:
+  matomo:

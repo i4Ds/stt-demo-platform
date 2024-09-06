@@ -1,0 +1,49 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons|Roboto';
+
+body {
+  font-family: Raleway, Raleway, sans-serif;
+}
+
+.file-input {
+  display: none;
+}
+
+.main-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(249, 249, 249);
+}
+
+.panel {
+  border-radius: 8px;
+  width: 480px;
+  height: 280px;
+  perspective: 1000px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%);
+  position: fixed;
+  border: 1px solid rgba(255, 255, 255, .9);
+  background-color: rgba(255, 255, 255, .9);
+  color: #767573;
+  font-weight: 600;
+}
+
+p.small {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+}
+
+.head-top {
+  text-align: center;
+  margin: 20px auto;
+  position: relative;
+}
+
+.content {
+  text-align: center;
+  margin: 20px auto;
+  position: relative;
+}

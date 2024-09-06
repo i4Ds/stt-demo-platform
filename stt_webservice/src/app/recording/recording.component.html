@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="recordingcontainer sketchy">
+
+    <h3>Hier kann ein Satz aufgenommen werden, welcher auf Hochdeutsch übersetzt werden soll.<br>
+      Eine Aufnahme darf maximal 15 Sekunden lang sein.</h3>
+
+    <div *ngIf="!startedRecording && microphoneok">
+      <div *ngIf="!hasRecording">
+        <button (click)="startRecording()">Aufnahme starten</button>
+      </div>
+      <div *ngIf="hasRecording">
+        <button (click)="startRecording()">Neue Aufnahme starten</button>
+      </div>
+    </div>
+
+    <div *ngIf="!microphoneok">
+      Kein Mikrophon gefunden.
+    </div>
+
+    <div *ngIf="startedRecording || hasRecording">
+      <br>
+      Dauer der Aufnahme: {{timeRecorded}}
+    </div>
+
+    <div *ngIf="startedRecording">
+      <button (click)="stopRecording()">Stopp</button>
+    </div>
+
+    <div *ngIf="hasRecording">
+      <button (click)="send()">Senden</button>
+    </div>
+  </div>
+
+  <div class="translationcontainer sketchy">
+    <h2>Übersetzung:</h2>
+    <div *ngIf="result.length > 0">
+      Die Übersetzung lautet:
+      {{result}}
+    </div>
+  </div>
+</div>

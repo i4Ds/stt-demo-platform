@@ -1,0 +1,106 @@
+services:
+  api:
+    build: ./stt_prediction_api
+    container_name: api
+    restart: unless-stopped
+    volumes:
+      - "/data:/data"
+    environment:
+      - "CONFIG_PATH=/data/wav2vec/configs/model/wav2vec/swissgerman_wav2vec.yaml"
+    ports:
+      - "5000:5000"
+  stt_api:
+    build: ./stt_api
+    container_name: stt_api
+    restart: unless-stopped
+    command: "gunicorn stt_api.wsgi:application --bind 0.0.0.0:8000"
+    environment:
+      - "SECRET_KEY=*6=7b^_24d)#7u*91w()!47g5snncjh)=1new9st@=02p_@i&s"
+      - "MEDIA_ROOT=/media_root"
+      - "DJANGO_ALLOWED_HOSTS=.fhnw.ch localhost 127.0.0.1 [::1]"
+      - "DJANGO_SETTINGS_MODULE=stt_api.settings.production"
+      - "DB_HOST=mongodb"
+      - "DB_PORT=27017"
+      - "DB_USERNAME=sg4mongo"
+      - "DB_PASSWORD=h8pCJthItB3bw464"
+    volumes:
+      - "/data/uploads:/media_root"
+    ports:
+      - 8000:8000
+  torchserve:
+    build: ./torchserve_wav2vec
+    container_name: torchserve_wav2vec
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "7070:7070"
+      - "7071:7071"
+    volumes:
+      - "/data/model_store/wav2vec:/tmp/models"
+    command: "torchserve --start --model-store /tmp/models"
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - "/data/mongodb:/data"
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=sg4mongo"
+      - "MONGO_INITDB_ROOT_PASSWORD=h8pCJthItB3bw464"
+    ports:
+      - "27017:27017"
+  db:
+    env_file:
+      - ./db.env
+    image: mysql:latest
+    restart: always
+    environment:
+     - MYSQL_ROOT_PASSWORD=sg4matomo
+    cap_add:
+      - SYS_NICE
+    volumes:
+     - mysqldb:/var/lib/mysql
+  matomo:
+    image: matomo:fpm
+    container_name: matomo
+    restart: always
+    depends_on:
+      - db
+    links:
+      - db
+    volumes:
+     - matomo:/var/www/html
+    environment:
+      - MATOMO_DATABASE_HOST=db
+      - PHP_MEMORY_LIMIT=2048M
+    env_file:
+      - ./db.env
+
+  nginx:
+    build: ./stt4sg-demo-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /data/nginx:/etc/nginx/conf.d
+      - /data/certbot/conf:/etc/letsencrypt
+      - /data/certbot/www:/var/www/certbot
+    links:
+      - matomo
+    volumes_from:
+      - matomo
+    depends_on:
+      - matomo
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - /data/certbot/conf:/etc/letsencrypt
+      - /data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  mysqldb:
+  matomo:

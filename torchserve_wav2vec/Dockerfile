@@ -1,0 +1,201 @@
+FROM pytorch/torchserve:0.5.3-cpu as cpu_base_builder
+
+# ==================================================================
+# module list
+# ------------------------------------------------------------------
+# Ubuntu           18.04
+# OpenMPI          latest       (apt)
+# cmake            3.16.3       (apt)
+# MKL              2020.4-912   (apt)
+# arrayfire        3.7.3        (git, CPU backend)
+# libsndfile       latest       (apt)
+# oneDNN           v2.0         (git)
+# Gloo             1da2117      (git)
+# FFTW             latest       (apt)
+# KenLM            0c4dd4e      (git)
+# GLOG             latest       (apt)
+# gflags           latest       (apt)
+# python3          latest       (apt)
+# ==================================================================
+
+#############################################################################
+#                             APT IMAGE + CMAKE                             #
+#############################################################################
+
+# FROM ubuntu:20.04 as cpu_base_builder
+
+USER root
+
+ENV APT_INSTALL="apt-get install -y --no-install-recommends"
+
+
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        build-essential \
+        ca-certificates \
+        wget \
+        git \
+        g++ \
+        cmake \
+        # for MKL
+        apt-transport-https gpg-agent gnupg2 \
+        # for kenlm
+        libboost-thread-dev libboost-test-dev libboost-system-dev libboost-program-options-dev \
+        # for arrayfire CPU backend
+        libboost-stacktrace-dev \
+        # OpenBLAS
+        libopenblas-dev liblapacke-dev \
+        # ATLAS
+        libatlas3-base libatlas-base-dev liblapacke-dev \
+        # FFTW
+        libfftw3-dev \
+        # ssh for OpenMPI
+        openssh-server openssh-client \
+        # for OpenMPI
+        libopenmpi-dev openmpi-bin \
+        # for kenlm
+        zlib1g-dev libbz2-dev liblzma-dev && \
+# ==================================================================
+# clean up everything
+# ------------------------------------------------------------------
+    apt-get clean && \
+    apt-get -y autoremove && \
+    rm -rf /var/lib/apt/lists/*
+
+#############################################################################
+#                                DEPS IMAGES                                #
+#############################################################################
+
+FROM cpu_base_builder as cpu_arrayfire
+
+RUN cd /tmp && wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && tar xf boost_1_79_0.tar.gz && \
+    cp -r boost_1_79_0/boost /usr/local/include
+
+# ==================================================================
+# arrayfire with CPU backend https://github.com/arrayfire/arrayfire/wiki/
+# ------------------------------------------------------------------
+RUN cd /tmp && git clone --branch v3.7.3 --depth 1 --recursive --shallow-submodules https://github.com/arrayfire/arrayfire.git && \
+    mkdir -p arrayfire/build && cd arrayfire/build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_INSTALL_PREFIX=/opt/arrayfire \
+             -DAF_BUILD_CPU=ON \
+             -DAF_BUILD_CUDA=OFF \
+             -DAF_BUILD_OPENCL=OFF \
+             -DAF_BUILD_EXAMPLES=OFF \
+             -DAF_WITH_IMAGEIO=OFF \
+             -DBUILD_TESTING=OFF \
+             -DAF_BUILD_DOCS=OFF && \
+    make install -j$(nproc)
+
+FROM cpu_base_builder as cpu_onednn
+# ==================================================================
+# oneDNN https://github.com/oneapi-src/oneDNN
+# ------------------------------------------------------------------
+RUN cd /tmp && git clone --branch v2.0 --depth 1 https://github.com/oneapi-src/onednn.git && \
+    mkdir -p onednn/build && cd onednn/build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_INSTALL_PREFIX=/opt/onednn \
+             -DDNNL_BUILD_EXAMPLES=OFF && \
+    make install -j$(nproc)
+
+FROM cpu_base_builder as cpu_gloo
+# ==================================================================
+# Gloo https://github.com/facebookincubator/gloo.git
+# ------------------------------------------------------------------
+RUN cd /tmp && git clone https://github.com/facebookincubator/gloo.git && \
+    cd gloo && git checkout 1da2117 && mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_INSTALL_PREFIX=/opt/gloo \
+             -DUSE_MPI=ON && \
+    make install -j$(nproc)
+
+FROM cpu_base_builder as cpu_kenlm
+# ==================================================================
+# KenLM https://github.com/kpu/kenlm
+# ------------------------------------------------------------------
+RUN cd /tmp && git clone https://github.com/kpu/kenlm.git && \
+    cd kenlm && git checkout 0c4dd4e && \
+    mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_INSTALL_PREFIX=/opt/kenlm \
+             -DCMAKE_POSITION_INDEPENDENT_CODE=ON && \
+    make install -j$(nproc)
+
+#############################################################################
+#                             FINAL IMAGE                                   #
+#############################################################################
+
+FROM cpu_base_builder as cpu_final
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        vim \
+        emacs \
+        nano \
+        htop \
+        # libsndfile
+        libsndfile1-dev \
+        # gflags
+        libgflags-dev libgflags2.2 \
+        # for glog
+        libgoogle-glog-dev libgoogle-glog0v5 \
+        # python sox
+        sox libsox-dev python3-dev python3-pip python3-distutils && \
+        # python (for bindings and preprocessing)
+        python3 -m pip --no-cache-dir install --upgrade setuptools numpy sox tqdm && \
+# ==================================================================
+# clean up everything
+# ------------------------------------------------------------------
+    apt-get clean && \
+    apt-get -y autoremove && \
+    rm -rf /var/lib/apt/lists/*
+# ==================================================================
+# MKL https://software.intel.com/en-us/mkl
+# ------------------------------------------------------------------
+RUN cd /tmp && wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB && \
+    apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB && \
+    sh -c 'echo deb https://apt.repos.intel.com/mkl all main > /etc/apt/sources.list.d/intel-mkl.list' && \
+    apt-get update && DEBIAN_FRONTEND=noninteractive $APT_INSTALL intel-mkl-64bit-2020.4-912 && \
+# ==================================================================
+# clean up everything
+# ------------------------------------------------------------------
+    apt-get clean && \
+    apt-get -y autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/*
+
+
+COPY --from=cpu_arrayfire  /opt/arrayfire  /opt/arrayfire
+COPY --from=cpu_onednn     /opt/onednn     /opt/onednn
+COPY --from=cpu_gloo       /opt/gloo       /opt/gloo
+COPY --from=cpu_kenlm      /opt/kenlm      /opt/kenlm
+
+ENV MKLROOT="/opt/intel/mkl"
+ENV KENLM_ROOT=/opt/kenlm
+
+# Install apt dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      unzip \
+      ffmpeg
+
+# Install python dependencies
+RUN python3 -m pip --no-cache-dir install packaging
+
+# Install flashlight python bindings
+RUN cd /tmp && \
+    wget -O flashlight-0.3.zip https://github.com/flashlight/flashlight/archive/refs/tags/v0.3.zip &&  \
+    unzip -q flashlight-0.3.zip && \
+    cd flashlight-0.3/bindings/python &&  \
+    export USE_CUDA=0 &&  \
+    python3 setup.py install
+
+# Install fairseq
+RUN cd /tmp &&  \
+    git clone https://github.com/pytorch/fairseq && \
+    cd fairseq &&  \
+    git checkout 01576be513488601e936df67e65e2817d18f576e &&  \
+    python3 -m pip --no-cache-dir install .
+
+USER model-server
+
