@@ -44,7 +44,7 @@ file_transcribe = gr.Interface(
         "<div style='font-size: 18px; line-height: 1.5;'>"
         "<p>Transcribe Swiss German audio of up to 15 minutes with a click!</p>"
         "<p>This demo uses a model trained on Swiss German Data by the "
-        "<a href='https://stt4sg.fhnw.ch/home' style='color: #007bff; text-decoration: none;'>NLP Team at i4ds</a>, "
+        "<a href='https://stt4sg.fhnw.ch/' style='color: #007bff; text-decoration: none;'>NLP Team at i4ds</a>, "
         "supervised by Prof. Dr. Manfred Vogel.</p>"
         "<p>It combines:"
         "<ul>"
@@ -71,7 +71,7 @@ mf_transcribe = gr.Interface(
         "<div style='font-size: 18px; line-height: 1.5;'>"
         "<p>Transcribe Swiss German audio from your microphone!</p>"
         "<p>This demo uses a model trained on Swiss German Data by the "
-        "<a href='https://stt4sg.fhnw.ch/home' style='color: #007bff; text-decoration: none;'>NLP Team at i4ds</a>, "
+        "<a href='https://stt4sg.fhnw.ch/' style='color: #007bff; text-decoration: none;'>NLP Team at i4ds</a>, "
         "supervised by Prof. Dr. Manfred Vogel.</p>"
         "<p>It combines:"
         "<ul>"
@@ -91,4 +91,4 @@ with demo:
         ["Audio file", "Microphone"],
     )
 
-demo.launch(server_name="127.0.0.1", server_port=7860)
+demo.launch(server_name="127.0.0.1", server_port=7860, root_path="/long_v2")

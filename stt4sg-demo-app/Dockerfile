@@ -8,5 +8,4 @@ RUN npm run build --prod
 
 FROM nginx:1.21
 COPY --from=build-step /app/dist/stt4sg-demo-app /usr/share/nginx/html
-EXPOSE 80:80
-EXPOSE 443:443
+EXPOSE 80
