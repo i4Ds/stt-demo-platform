@@ -71,7 +71,7 @@ def subs_to_Xsv(subs: SSAFile, include_timestamps: bool, sep: str = ","):
     return output.getvalue()
 
 
-def prepare_download(subs, file_format, include_timestamps):
+def prepare_download(subs, file_format, include_timestamps, include_watermark):
     if subs is None:
         raise gr.Error(
             "No subtitles available for download. Please transcribe an audio file first."
@@ -87,6 +87,11 @@ def prepare_download(subs, file_format, include_timestamps):
     else:
         raise ValueError(f"Unsupported file format: {file_format}")
 
+    if include_watermark:
+        # Add watermark to the subtitle text
+        watermark = "\n\nTranscribed by i4ds\nURL: https://stt4sg.fhnw.ch/long_v2"
+        sub_text += watermark
+
     with tempfile.NamedTemporaryFile(
         mode="w", delete=False, suffix=f".{file_format}"
     ) as temp_file:
@@ -96,9 +101,9 @@ def prepare_download(subs, file_format, include_timestamps):
     return temp_file_path
 
 
-demo = gr.Blocks(theme=THEME)
+app = gr.Blocks(theme=THEME)
 
-with demo:
+with app:
     gr.Markdown("# Swiss German Whisper")
     gr.Markdown(
         "<div style='font-size: 18px; line-height: 1.5;'>"
@@ -132,6 +137,7 @@ with demo:
             choices=["txt", "srt", "csv", "tsv"], label="File Format", value="txt"
         )
         include_timestamps = gr.Checkbox(label="Include timestamps", value=True)
+        include_watermak = gr.Checkbox(label="Include watermark", value=True)
 
     download_button = gr.Button("Process transcription")
 
@@ -149,8 +155,8 @@ with demo:
 
     download_button.click(
         prepare_download,
-        inputs=[subs, file_format, include_timestamps],
+        inputs=[subs, file_format, include_timestamps, include_watermak],
         outputs=[file_output],
     )
 
-demo.launch(server_name="127.0.0.1", server_port=7860, root_path="/long_v2")
+app.launch(server_name="127.0.0.1", server_port=7860, root_path="/long_v2")
