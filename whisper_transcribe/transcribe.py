@@ -69,7 +69,7 @@ class AudioTranscriber:
             audio_array = torchaudio.transforms.Resample(sr, self.sr_rate)(audio_array)
         return torch.mean(audio_array, dim=0).numpy()
 
-    def transcribe(self, audio, batch_size=8):
+    def transcribe(self, audio, batch_size=16):
         if isinstance(audio, str):
             if audio.endswith(".mp4"):
                 # Video, extract Audio
