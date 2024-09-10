@@ -1,9 +1,9 @@
 import gradio as gr
 import os
+from utils import UPLOAD_FOLDER
 
 # Assuming these folders are defined and exist
-UPLOAD_FOLDER = "uploads"
-CONVERTED_FOLDER = os.path.join(UPLOAD_FOLDER, "converted")
+CONVERTED_FOLDER = "converted"
 
 
 def check_file_status(request: gr.Request):
@@ -14,7 +14,8 @@ def check_file_status(request: gr.Request):
         return "Error: No file UUID provided in the URL. Use ?uuid=your-file-uuid"
 
     # Check in the converted folder first
-    converted_file_path = os.path.join(CONVERTED_FOLDER, f"{file_uuid}.mp3")
+    output_path = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
+    converted_file_path = os.path.join(output_path, f"{file_uuid}.mp3")
     if os.path.exists(converted_file_path):
         return f"File found: {file_uuid}.mp3"
 

@@ -1,28 +1,16 @@
-import numpy as np
 import pysubs2
 import torch
-import os
 import whisperx
 import torchaudio
 from whisperx.alignment import DEFAULT_ALIGN_MODELS_HF
-from utils import convert_to_mp3_16khz
+from utils import convert_to_mp3_16khz, UPLOAD_FOLDER, CONVERTED_FOLDER
+import os
+import shutil
+import time
 
 DEFAULT_ALIGN_MODELS_HF["de"] = "scasutt/wav2vec2-large-xlsr-52_Swiss_German"
-
-
-def align_with_whisperx(list_of_dict, audio, device, language):
-    model_a, metadata = whisperx.load_align_model(language_code=language, device=None)
-    if device is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-    aligned_result = whisperx.align(
-        list_of_dict,
-        model_a,
-        metadata,
-        audio.astype(np.float32),
-        device,
-        return_char_alignments=False,
-    )
-    return aligned_result
+PROCESSED_FOLDER = "processed"
+TRANSCRIPED_FOLDER = "transcribed"
 
 
 class AudioTranscriber:
@@ -77,3 +65,38 @@ class AudioTranscriber:
         pred_subs = pysubs2.load_from_whisper(aligned_result)
 
         return pred_subs
+
+
+if __name__ == "__main__":
+    audio_transcriber = AudioTranscriber()
+    input_mp3s = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
+    output_mp3s = os.path.join(UPLOAD_FOLDER, PROCESSED_FOLDER)
+
+    while True:
+        audio_files = [f for f in os.listdir(input_mp3s) if f.endswith(".mp3")]
+
+        if audio_files:
+            print(f"Found {len(audio_files)} new files to process.")
+            for audio_file in audio_files:
+                print(f"Processing {audio_file}")
+                # Make paths
+                input_path = os.path.join(input_mp3s, audio_file)
+                output_path = os.path.join(output_mp3s, audio_file)
+                transcription_path = os.path.join(
+                    TRANSCRIPED_FOLDER, f"{os.path.splitext(audio_file)[0]}.srt"
+                )
+
+                # Transcribe the audio file
+                transcription: pysubs2.SSAFile = audio_transcriber.transcribe(
+                    input_path
+                )
+
+                transcription.save(transcription_path)
+
+                # Move the processed audio file
+                shutil.move(input_path, output_path)
+
+                print(f"Processed and moved: {audio_file}")
+        else:
+            print("No new files to process. Sleeping for 1 second...")
+            time.sleep(1)

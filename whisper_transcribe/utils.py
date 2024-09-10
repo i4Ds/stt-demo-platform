@@ -4,7 +4,8 @@ import uuid
 import shutil
 import gradio as gr
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = "data"
+CONVERTED_FOLDER = "converted"
 BASE_URL = "https://stt4sg.fhnw.ch"  # Replace with your actual base URL
 
 
@@ -49,7 +50,7 @@ def handle_upload(file):
         raise gr.Error("Failed to upload file. Please try again.")
 
 
-def convert_to_mp3_16khz(input_path, base_path="converted"):
+def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     """
     Convert a video or audio file to MP3 format with a sample rate of 16000 Hz.
     Save the converted file in a 'converted' subfolder.
