@@ -1,14 +1,11 @@
 import gradio as gr
 import os
-from utils import (
-    handle_upload,
-    UPLOAD_FOLDER,
-)
+from utils import handle_upload, UPLOAD_FOLDER
 
 # Configuration
 THEME = gr.themes.Soft()
 
-# Ensure the upload folder exists
+# Ensure the upload and converted folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 

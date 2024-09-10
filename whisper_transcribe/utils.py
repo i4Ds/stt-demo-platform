@@ -2,6 +2,7 @@ from moviepy.editor import VideoFileClip, AudioFileClip
 import os
 import uuid
 import shutil
+import gradio as gr
 
 UPLOAD_FOLDER = "uploads"
 BASE_URL = "https://stt4sg.fhnw.ch"  # Replace with your actual base URL
