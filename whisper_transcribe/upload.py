@@ -24,12 +24,12 @@ with gr.Blocks(theme=THEME) as app:
         "<li><a href='https://github.com/m-bain/whisperX' style='color: #007bff; text-decoration: none;'>m-bain/whisperX</a> for precise word-level timestamps</li>"
         "</ul>"
         "</p>"
-        "The model is currently running on a CPU and thus expect the transcription to take around the same time as the audio length. After selecting your file or drag & drop, click 'Upload' and wait for your transcription to finish."
+        "The model is currently running on a CPU and thus expect the transcription to take around the same time as the audio length. After selecting your file or drag & drop, wait for the file to Upload and click on 'Convert & Transcribe'."
         "</div>"
     )
     with gr.Row():
-        file_input = gr.File(label="Select Audio File")
-        upload_button = gr.Button("Upload & Convert")
+        file_input = gr.File(label="Select & Upload Audio File")
+        upload_button = gr.Button("Convert & Transcribe")
 
     output_text = gr.Markdown(label="Upload Status")
 

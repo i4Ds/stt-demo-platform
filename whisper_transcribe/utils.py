@@ -45,7 +45,9 @@ def save_uploaded_file(file):
 
 def handle_upload(file):
     if file is None:
-        raise gr.Error("No file selected. Please select a file to process.")
+        raise gr.Error(
+            "No file available. Please select file or wait for the upload to finish."
+        )
 
     file_name = save_uploaded_file(file)
     if file_name:
@@ -88,7 +90,6 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
         if is_video:
             clip = VideoFileClip(input_path)
             audio = clip.audio
-            clip.close()
         else:
             audio = AudioFileClip(input_path)
 
@@ -101,6 +102,8 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
 
         # Close the clips to free up system resources
         audio.close()
+        if is_video:
+            clip.close()
 
         print(f"Successfully converted {input_path} to MP3 (16000 Hz)")
         print(f"Saved as: {output_path}")
