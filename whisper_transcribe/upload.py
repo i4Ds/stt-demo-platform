@@ -14,7 +14,7 @@ with gr.Blocks(theme=THEME) as app:
     gr.Markdown("# Swiss German Whisper")
     gr.Markdown(
         "<div style='font-size: 18px; line-height: 1.5;'>"
-        "<p>Transcribe Swiss German audio of up to 15 minutes with a click!</p>"
+        "<p>Transcribe Swiss German audio files of up to 500MB!</p>"
         "<p>This demo uses a model trained on Swiss German Data by the "
         "<a href='https://stt4sg.fhnw.ch/' style='color: #007bff; text-decoration: none;'>NLP Team at i4ds</a>, "
         "supervised by Prof. Dr. Manfred Vogel.</p>"
