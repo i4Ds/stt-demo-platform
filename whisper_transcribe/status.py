@@ -29,7 +29,7 @@ def check_file_status(request: gr.Request):
         )
     else:
         return (
-            f"File with UUID {uuid} not found. It may still be processing or the UUID is incorrect.",
+            f"File with UUID {uuid} not found. It may still be processing or the UUID is incorrect. Please refresh the page to check the status again.",
             gr.update(visible=False),
             gr.update(visible=False),
             gr.update(visible=False),
