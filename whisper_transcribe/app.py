@@ -139,7 +139,7 @@ with app:
         include_timestamps = gr.Checkbox(label="Include timestamps", value=True)
         include_watermak = gr.Checkbox(label="Include watermark", value=True)
 
-    download_button = gr.Button("Process transcription")
+    download_button = gr.Button("Ready transcription for download.")
 
     file_output = gr.File(label="Downloads")
 
