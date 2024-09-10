@@ -1,1 +1,2 @@
 *.pyc
+whisper_transcribe/uploads/*

@@ -5,7 +5,7 @@ import os
 import whisperx
 import torchaudio
 from whisperx.alignment import DEFAULT_ALIGN_MODELS_HF
-from moviepy.editor import VideoFileClip
+from utils import convert_to_mp3_16khz
 
 DEFAULT_ALIGN_MODELS_HF["de"] = "scasutt/wav2vec2-large-xlsr-52_Swiss_German"
 
@@ -47,22 +47,6 @@ class AudioTranscriber:
         )
         self.sr_rate = sr_rate
 
-    def video_to_mp3(self, path):
-        # Load the video file
-        video = VideoFileClip(path)
-
-        # Extract the audio
-        audio = video.audio
-
-        # Mp3 path
-        file_path, _ = os.path.splitext(path)
-        mp3_path = file_path + ".mp3"
-
-        # Write the audio to an MP3 file
-        audio.write_audiofile(mp3_path)
-
-        return mp3_path
-
     def load_audio_to_numpy(self, audio_path):
         audio_array, sr = torchaudio.load(audio_path)
         if sr != self.sr_rate:
@@ -71,9 +55,9 @@ class AudioTranscriber:
 
     def transcribe(self, audio, batch_size=16):
         if isinstance(audio, str):
-            if audio.endswith(".mp4"):
+            if not audio.endswith(".mp3"):
                 # Video, extract Audio
-                audio = self.video_to_mp3(audio)
+                audio = convert_to_mp3_16khz(audio)
             audio = self.load_audio_to_numpy(audio_path=audio)
 
         transcription_result = self.transcribe_model.transcribe(
