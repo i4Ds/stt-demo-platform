@@ -44,7 +44,7 @@ def handle_upload(file):
 
     file_uuid = save_uploaded_file(file)
     if file_uuid:
-        status_url = f"{BASE_URL}/status/{file_uuid}"
+        status_url = f"{BASE_URL}/long_v3/status?uuid={file_uuid}"
         return f"File uploaded & converted successfully. Check the status here: [Transcription Status]({status_url})"
     else:
         raise gr.Error("Failed to upload file. Please try again.")

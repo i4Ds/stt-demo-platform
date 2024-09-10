@@ -28,8 +28,8 @@ with gr.Blocks(theme=THEME) as app:
         "</div>"
     )
     with gr.Row():
-        file_input = gr.File(label="Upload Audio File")
-        upload_button = gr.Button("Upload")
+        file_input = gr.File(label="Select Audio File")
+        upload_button = gr.Button("Upload & Convert")
 
     output_text = gr.Markdown(label="Upload Status")
 

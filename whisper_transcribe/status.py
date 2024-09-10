@@ -1,39 +1,41 @@
 import gradio as gr
 import os
 from utils import UPLOAD_FOLDER
-
-# Assuming these folders are defined and exist
-CONVERTED_FOLDER = "converted"
+from transcribe import TRANSCRIBED_FOLDER
 
 
-def check_file_status(request: gr.Request):
-    params = request.query_params
-    file_uuid = params.get("uuid", "")
+def check_file_status(uuid: str, request: gr.Request):
+    if not uuid:
+        return "Error: No file UUID provided. Please enter a UUID."
 
-    if not file_uuid:
-        return "Error: No file UUID provided in the URL. Use ?uuid=your-file-uuid"
-
-    # Check in the converted folder first
-    output_path = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
-    converted_file_path = os.path.join(output_path, f"{file_uuid}.mp3")
+    # Check in the converted folder
+    output_path = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
+    converted_file_path = os.path.join(output_path, f"{uuid}.srt")
     if os.path.exists(converted_file_path):
-        return f"File found: {file_uuid}.mp3"
+        return f"File found: {uuid}.srt"
 
-    # If not in converted, check in the uploads folder
-    for filename in os.listdir(UPLOAD_FOLDER):
-        if filename.startswith(file_uuid):
-            return f"File found: {filename}"
+    return f"Error: No file found with UUID {uuid}"
 
-    return f"Error: No file found with UUID {file_uuid}"
+
+def get_initial_uuid(request: gr.Request):
+    return request.query_params.get("uuid", "")
 
 
 with gr.Blocks() as status_app:
     gr.Markdown("# File Status Checker")
 
-    status_output = gr.Markdown("Click 'Check Status' to see the result.")
+    uuid_input = gr.Textbox(label="File UUID", placeholder="Enter file UUID here")
     check_button = gr.Button("Check Status")
+    status_output = gr.Markdown("Status will appear here.")
 
-    check_button.click(fn=check_file_status, outputs=status_output)
+    check_button.click(fn=check_file_status, inputs=[uuid_input], outputs=status_output)
+
+    # Set initial UUID value from request
+    status_app.load(
+        fn=get_initial_uuid,
+        inputs=None,
+        outputs=uuid_input,
+    )
 
 if __name__ == "__main__":
     status_app.launch(

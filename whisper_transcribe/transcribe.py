@@ -10,7 +10,7 @@ import time
 
 DEFAULT_ALIGN_MODELS_HF["de"] = "scasutt/wav2vec2-large-xlsr-52_Swiss_German"
 PROCESSED_FOLDER = "processed"
-TRANSCRIPED_FOLDER = "transcribed"
+TRANSCRIBED_FOLDER = "transcribed"
 
 
 class AudioTranscriber:
@@ -69,8 +69,12 @@ class AudioTranscriber:
 
 if __name__ == "__main__":
     audio_transcriber = AudioTranscriber()
+    # Create path and folders
     input_mp3s = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
     output_mp3s = os.path.join(UPLOAD_FOLDER, PROCESSED_FOLDER)
+    output_srts = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
+    os.makedirs(output_mp3s, exist_ok=True)
+    os.makedirs(output_srts, exist_ok=True)
 
     while True:
         audio_files = [f for f in os.listdir(input_mp3s) if f.endswith(".mp3")]
@@ -83,7 +87,7 @@ if __name__ == "__main__":
                 input_path = os.path.join(input_mp3s, audio_file)
                 output_path = os.path.join(output_mp3s, audio_file)
                 transcription_path = os.path.join(
-                    TRANSCRIPED_FOLDER, f"{os.path.splitext(audio_file)[0]}.srt"
+                    output_srts, f"{os.path.splitext(audio_file)[0]}.srt"
                 )
 
                 # Transcribe the audio file
@@ -98,5 +102,4 @@ if __name__ == "__main__":
 
                 print(f"Processed and moved: {audio_file}")
         else:
-            print("No new files to process. Sleeping for 1 second...")
             time.sleep(1)

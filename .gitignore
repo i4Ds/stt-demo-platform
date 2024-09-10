@@ -1,3 +1,4 @@
-*.pyc
-whisper_transcribe/uploads/*
+
 whisper_transcribe/__pycache__/*
+whisper_transcribe/data/*
+*.pyc
