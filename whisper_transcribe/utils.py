@@ -4,6 +4,9 @@ import uuid
 import shutil
 import gradio as gr
 import pysubs2
+from transcribe import TRANSCRIBED_FOLDER
+import os
+import tempfile
 
 UPLOAD_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
@@ -139,3 +142,33 @@ def convert_srt_to_format(srt_path, format, include_timestamps=True):
         return content
     except Exception as e:
         return f"Error converting file: {str(e)}"
+
+
+def check_file_status(uuid: str):
+    if not uuid:
+        return "Error: No file UUID provided. Please add a UUID to the URL.", None
+
+    output_path = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
+    srt_file_path = os.path.join(output_path, f"{uuid}.srt")
+
+    if os.path.exists(srt_file_path):
+        return f"File is ready: {uuid}.srt", srt_file_path
+
+    return (
+        f"Processing file with UUID {uuid}. Please refresh the page to check again.",
+        None,
+    )
+
+
+def handle_download(file_path, format):
+    if not file_path or not format:
+        return None, "No file available for download."
+    content = convert_srt_to_format(file_path, format)
+    if content.startswith("Error"):
+        return None, content
+
+    with tempfile.NamedTemporaryFile(
+        mode="w", delete=False, suffix=f".{format}"
+    ) as temp_file:
+        temp_file.write(content)
+        return temp_file.name, f"File converted to {format}. Click to download."
