@@ -87,7 +87,7 @@ if __name__ == "__main__":
     input_mp3s = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
     output_mp3s = os.path.join(UPLOAD_FOLDER, PROCESSED_FOLDER)
     output_srts = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
-    error_folder = os.path.join(UPLOAD_FOLDER, "error")
+    error_folder = os.path.join(UPLOAD_FOLDER, "trans_error")
     os.makedirs(output_mp3s, exist_ok=True)
     os.makedirs(output_srts, exist_ok=True)
     os.makedirs(error_folder, exist_ok=True)

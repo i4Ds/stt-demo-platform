@@ -7,6 +7,7 @@ import pysubs2
 
 UPLOAD_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
+ERROR_FOLDER = "conv_error"
 BASE_URL = "https://stt4sg.fhnw.ch"  # Replace with your actual base URL
 
 
@@ -104,6 +105,10 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+        os.makedirs(os.path.join(UPLOAD_FOLDER, ERROR_FOLDER), exist_ok=True)
+        shutil.move(
+            input_path, os.path.join(UPLOAD_FOLDER, ERROR_FOLDER, input_filename)
+        )
         return None
 
 
