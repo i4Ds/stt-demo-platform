@@ -5,40 +5,53 @@ from transcribe import TRANSCRIBED_FOLDER
 import tempfile
 
 
-def check_file_status(uuid: str):
+def check_file_status(request: gr.Request):
+    uuid = request.query_params.get("uuid", "")
     if not uuid:
-        return "Error: No file UUID provided. Please add a UUID to the URL.", None
+        return (
+            "Error: No file UUID provided. Please add a UUID to the URL.",
+            gr.update(visible=False),
+            gr.update(visible=False),
+            gr.update(visible=False),
+            None,
+        )
 
     output_path = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
     srt_file_path = os.path.join(output_path, f"{uuid}.srt")
 
     if os.path.exists(srt_file_path):
-        return f"File is ready: {uuid}.srt", srt_file_path
-
-    return (
-        f"File with UUID {uuid} not found. It may still be processing or the UUID is incorrect. Please refresh the page to check again.",
-        None,
-    )
-
-
-def get_initial_uuid(request: gr.Request):
-    return request.query_params.get("uuid", "")
+        return (
+            f"File is ready: {uuid}.srt",
+            gr.update(visible=True),
+            gr.update(visible=True),
+            gr.update(visible=True),
+            srt_file_path,
+        )
+    else:
+        return (
+            f"File with UUID {uuid} not found. It may still be processing or the UUID is incorrect.",
+            gr.update(visible=False),
+            gr.update(visible=False),
+            gr.update(visible=False),
+            None,
+        )
 
 
 def handle_download(file_path, format):
     if not file_path or not format:
         return None
+
     content = convert_srt_to_format(file_path, format)
     if content.startswith("Error"):
         return content
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", delete=False, suffix=f".{format}"
-    ) as temp_file:
-        temp_file.write(content)
-        temp_file_path = temp_file.name
+    new_file_path = file_path.replace(".srt", f".{format}")
 
-    return temp_file_path
+    # Write the content to the new file
+    with open(new_file_path, "w", encoding="utf-8") as file:
+        file.write(content)
+
+    return new_file_path
 
 
 with gr.Blocks() as status_app:
@@ -48,13 +61,12 @@ with gr.Blocks() as status_app:
 
         <div style='font-size: 18px; line-height: 1.5;'>
         <p>Check the status of your Swiss German audio transcription here!</p>
-        <p>The UUID from your file upload should be in the URL. If your file isn't ready yet, simply refresh the page to check again.</p>
+        <p>If your file is available, select your preferred format and click "Generate".</p>
         </div>
         """
     )
 
-    uuid_display = gr.Markdown("Checking status...")
-    status_output = gr.Markdown("Status will appear here.")
+    status_output = gr.Markdown("Checking status...")
     format_dropdown = gr.Dropdown(
         choices=["srt", "csv", "tsv", "txt"],
         label="Select download format",
@@ -63,31 +75,16 @@ with gr.Blocks() as status_app:
     )
     download_button = gr.Button("Generate", visible=False)
     file_path_state = gr.State(None)
-    download_file = gr.File(label="Available Files", visible=True)
-
-    def update_status(uuid):
-        status, file_path = check_file_status(uuid)
-        downloads_visible = file_path is not None
-        return (
-            uuid,
-            status,
-            gr.update(visible=downloads_visible),
-            gr.update(visible=downloads_visible),
-            file_path,
-        )
+    download_file = gr.File(label="Available Files", visible=False)
 
     status_app.load(
-        fn=get_initial_uuid,
+        fn=check_file_status,
         inputs=None,
-        outputs=uuid_display,
-    ).then(
-        fn=update_status,
-        inputs=[uuid_display],
         outputs=[
-            uuid_display,
             status_output,
             format_dropdown,
             download_button,
+            download_file,
             file_path_state,
         ],
     )

@@ -1,11 +1,12 @@
 from moviepy.editor import VideoFileClip, AudioFileClip
 import os
-import uuid
 import shutil
 import gradio as gr
 import pysubs2
 import os
 import tempfile
+from sanitize_filename import sanitize
+from uuid import uuid4
 
 UPLOAD_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
@@ -17,14 +18,14 @@ def save_uploaded_file(file):
     if file is None:
         return None
 
-    # Generate a UUID for the file
-    file_uuid = str(uuid.uuid4())
+    # Generate a file_name for the file
+    file_name = sanitize(os.path.basename(file.name.split(".")[0]))
 
     # Get the file extension
     _, file_extension = os.path.splitext(file.name)
 
-    # Create the new filename with UUID
-    new_filename = f"{file_uuid}{file_extension}"
+    # Create the new filename with file_name
+    new_filename = f"{file_name}{file_extension}"
 
     # Save the file
     original_path = os.path.join(UPLOAD_FOLDER, new_filename)
@@ -39,16 +40,16 @@ def save_uploaded_file(file):
     else:
         print(f"Conversion failed. Original file retained: {original_path}")
 
-    return file_uuid
+    return file_name
 
 
 def handle_upload(file):
     if file is None:
         raise gr.Error("No file selected. Please select a file to process.")
 
-    file_uuid = save_uploaded_file(file)
-    if file_uuid:
-        status_url = f"{BASE_URL}/long_v3/status?uuid={file_uuid}"
+    file_name = save_uploaded_file(file)
+    if file_name:
+        status_url = f"{BASE_URL}/long_v3/status?uuid={file_name}"
         return f"File uploaded & converted successfully. Check the status here: [Transcription Status]({status_url})"
     else:
         raise gr.Error("Failed to upload file. Please try again.")
@@ -68,11 +69,15 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     converted_dir = os.path.join(input_dir, base_path)
     os.makedirs(converted_dir, exist_ok=True)
 
-    # If no output path is specified, create one in the 'converted' folder
+    # Generate the output filename
     input_filename = os.path.basename(input_path)
     output_filename = os.path.splitext(input_filename)[0] + ".mp3"
+
+    # Create the full output path
     output_path = os.path.join(converted_dir, output_filename)
-    lock_path = os.path.join(converted_dir, output_filename + ".lock")
+
+    # Create the lock file path
+    lock_path = f"{output_path}.lock"
 
     try:
         # Determine if the input is a video or audio file
