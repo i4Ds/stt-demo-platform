@@ -13,14 +13,12 @@ PROCESSED_FOLDER = "processed"
 TRANSCRIBED_FOLDER = "transcribed"
 
 
-def is_file_ready(file_path, timeout=60, check_interval=5):
-    """Check if a file exists and is readable."""
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        if os.path.exists(file_path) and os.access(file_path, os.W_OK):
-            return True
-        time.sleep(check_interval)
-    return False
+def is_file_locked(file_path):
+    lock_path = file_path + ".lock"
+    if os.path.exists(lock_path):
+        return True
+    else:
+        return False
 
 
 class AudioTranscriber:
@@ -89,8 +87,10 @@ if __name__ == "__main__":
     input_mp3s = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
     output_mp3s = os.path.join(UPLOAD_FOLDER, PROCESSED_FOLDER)
     output_srts = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
+    error_folder = os.path.join(UPLOAD_FOLDER, "error")
     os.makedirs(output_mp3s, exist_ok=True)
     os.makedirs(output_srts, exist_ok=True)
+    os.makedirs(error_folder, exist_ok=True)
 
     while True:
         audio_files = [f for f in os.listdir(input_mp3s) if f.endswith(".mp3")]
@@ -105,24 +105,25 @@ if __name__ == "__main__":
                 transcription_path = os.path.join(
                     output_srts, f"{os.path.splitext(audio_file)[0]}.srt"
                 )
-                if not is_file_ready(os.path.join(input_mp3s, audio_file)):
-                    print(
-                        f"File {audio_file} is still being written to. Skipping for now."
-                    )
+                if is_file_locked(os.path.join(input_mp3s, audio_file)):
+                    print(f"File {audio_file} is locked. Skipping for now.")
                     continue
-                try:
-                    # Transcribe the audio file
-                    transcription: pysubs2.SSAFile = audio_transcriber.transcribe(
-                        input_path
-                    )
+                else:
+                    try:
+                        # Transcribe the audio file
+                        transcription: pysubs2.SSAFile = audio_transcriber.transcribe(
+                            input_path
+                        )
 
-                    transcription.save(transcription_path)
+                        transcription.save(transcription_path)
 
-                    # Move the processed audio file
-                    shutil.move(input_path, output_path)
+                        # Move the processed audio file
+                        shutil.move(input_path, output_path)
 
-                    print(f"Processed and moved: {audio_file}")
-                except Exception as e:
-                    print(f"Error processing {audio_file}: {e}")
+                        print(f"Processed and moved: {audio_file}")
+                    except Exception as e:
+                        print(f"Error processing {audio_file}: {e}")
+                        # Move the file to error folder
+                        shutil.move(input_path, os.path.join(error_folder, audio_file))
         else:
-            time.sleep(1)
+            time.sleep(5)

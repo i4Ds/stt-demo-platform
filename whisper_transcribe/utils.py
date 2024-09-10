@@ -69,6 +69,7 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     input_filename = os.path.basename(input_path)
     output_filename = os.path.splitext(input_filename)[0] + ".mp3"
     output_path = os.path.join(converted_dir, output_filename)
+    lock_path = os.path.join(converted_dir, output_filename + ".lock")
 
     try:
         # Determine if the input is a video or audio file
@@ -79,19 +80,26 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
         if is_video:
             clip = VideoFileClip(input_path)
             audio = clip.audio
+            clip.close()
         else:
             audio = AudioFileClip(input_path)
 
+        # Create lock file
+        with open(lock_path, "w") as lock_file:
+            lock_file.write("Conversion in progress...")
+
         # Write the audio to an MP3 file with 16000 Hz sample rate
-        audio.write_audiofile(output_path, fps=16000)
+        audio.write_audiofile(output_path, fps=16000, bitrate="128k")
 
         # Close the clips to free up system resources
         audio.close()
-        if is_video:
-            clip.close()
 
         print(f"Successfully converted {input_path} to MP3 (16000 Hz)")
         print(f"Saved as: {output_path}")
+
+        # Remove lock file
+        os.remove(lock_path)
+
         return output_path
 
     except Exception as e:
