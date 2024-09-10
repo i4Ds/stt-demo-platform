@@ -1,6 +1,5 @@
 import gradio as gr
 import os
-import pysubs2
 import tempfile
 from utils import UPLOAD_FOLDER, convert_srt_to_format
 from transcribe import TRANSCRIBED_FOLDER
@@ -17,7 +16,7 @@ def check_file_status(uuid: str):
         return f"File is ready: {uuid}.srt", srt_file_path
 
     return (
-        f"Processing file with UUID {uuid}. This page will automatically update every 15 seconds.",
+        f"Processing file with UUID {uuid}. Please refresh the page to check again.",
         None,
     )
 
@@ -40,16 +39,16 @@ def update_status(uuid):
 
 def handle_download(file_path, format):
     if not file_path or not format:
-        return None, gr.update(visible=False)
+        return None, "No file available for download."
     content = convert_srt_to_format(file_path, format)
     if content.startswith("Error"):
-        return content, gr.update(visible=True)
+        return None, content
 
     with tempfile.NamedTemporaryFile(
         mode="w", delete=False, suffix=f".{format}"
     ) as temp_file:
         temp_file.write(content)
-        return temp_file.name, gr.update(visible=True)
+        return temp_file.name, f"File converted to {format}. Click to download."
 
 
 with gr.Blocks() as status_app:
@@ -63,11 +62,10 @@ with gr.Blocks() as status_app:
         value="srt",
         visible=False,
     )
-    download_button = gr.Button("Download", visible=False)
+    download_button = gr.Button("Convert and Download", visible=False)
     file_path_state = gr.State(None)
-
-    # Create the File component with visible=False
     download_file = gr.File(label="Download File", visible=False)
+    download_status = gr.Markdown(visible=False)
 
     status_app.load(
         fn=get_initial_uuid,
@@ -83,13 +81,16 @@ with gr.Blocks() as status_app:
             download_button,
             file_path_state,
         ],
-        every=3,
     )
 
     download_button.click(
         fn=handle_download,
         inputs=[file_path_state, format_dropdown],
-        outputs=[download_file, download_file],
+        outputs=[download_file, download_status],
+    ).then(
+        lambda: (gr.update(visible=True), gr.update(visible=True)),
+        None,
+        [download_file, download_status],
     )
 
 if __name__ == "__main__":
