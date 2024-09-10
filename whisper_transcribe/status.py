@@ -4,17 +4,23 @@ from utils import UPLOAD_FOLDER
 from transcribe import TRANSCRIBED_FOLDER
 
 
-def check_file_status(uuid: str, request: gr.Request):
+def check_file_status(uuid: str):
     if not uuid:
-        return "Error: No file UUID provided. Please enter a UUID."
+        return "Error: No file UUID provided. Please add a UUID to the URL.", gr.File(
+            visible=False
+        )
 
-    # Check in the converted folder
     output_path = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
     converted_file_path = os.path.join(output_path, f"{uuid}.srt")
     if os.path.exists(converted_file_path):
-        return f"File found: {uuid}.srt"
+        return f"File is ready: {uuid}.srt", gr.File(
+            value=converted_file_path, visible=True
+        )
 
-    return f"Error: No file found with UUID {uuid}"
+    return (
+        f"Processing file with UUID {uuid}. This page will automatically update every 15 seconds.",
+        gr.File(visible=False),
+    )
 
 
 def get_initial_uuid(request: gr.Request):
@@ -24,17 +30,23 @@ def get_initial_uuid(request: gr.Request):
 with gr.Blocks() as status_app:
     gr.Markdown("# File Status Checker")
 
-    uuid_input = gr.Textbox(label="File UUID", placeholder="Enter file UUID here")
-    check_button = gr.Button("Check Status")
+    uuid_display = gr.Markdown("Checking status...")
     status_output = gr.Markdown("Status will appear here.")
+    download_link = gr.File(label="Download File", visible=False)
 
-    check_button.click(fn=check_file_status, inputs=[uuid_input], outputs=status_output)
+    def update_status(uuid):
+        status, download = check_file_status(uuid)
+        return uuid, status, download
 
-    # Set initial UUID value from request
     status_app.load(
         fn=get_initial_uuid,
         inputs=None,
-        outputs=uuid_input,
+        outputs=uuid_display,
+    ).then(
+        fn=update_status,
+        inputs=[uuid_display],
+        outputs=[uuid_display, status_output, download_link],
+        every=15,  # Auto-update every 15 seconds
     )
 
 if __name__ == "__main__":
