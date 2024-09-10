@@ -13,6 +13,16 @@ PROCESSED_FOLDER = "processed"
 TRANSCRIBED_FOLDER = "transcribed"
 
 
+def is_file_ready(file_path, timeout=60, check_interval=5):
+    """Check if a file exists and is readable."""
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        if os.path.exists(file_path) and os.access(file_path, os.W_OK):
+            return True
+        time.sleep(check_interval)
+    return False
+
+
 class AudioTranscriber:
     def __init__(
         self,
@@ -41,7 +51,7 @@ class AudioTranscriber:
             audio_array = torchaudio.transforms.Resample(sr, self.sr_rate)(audio_array)
         return torch.mean(audio_array, dim=0).numpy()
 
-    def transcribe(self, audio, batch_size=16):
+    def transcribe(self, audio, batch_size=8):
         if isinstance(audio, str):
             if not audio.endswith(".mp3"):
                 # Video, extract Audio
@@ -49,7 +59,11 @@ class AudioTranscriber:
             audio = self.load_audio_to_numpy(audio_path=audio)
 
         transcription_result = self.transcribe_model.transcribe(
-            audio, batch_size=batch_size, language=self.language
+            audio,
+            batch_size=batch_size,
+            language=self.language,
+            print_progress=True,
+            combined_progress=True,
         )
 
         aligned_result = whisperx.align(
@@ -59,6 +73,8 @@ class AudioTranscriber:
             audio,
             device=self.device,
             return_char_alignments=False,
+            print_progress=True,
+            combined_progress=True,
         )
 
         # Create subs
@@ -89,17 +105,24 @@ if __name__ == "__main__":
                 transcription_path = os.path.join(
                     output_srts, f"{os.path.splitext(audio_file)[0]}.srt"
                 )
+                if not is_file_ready(os.path.join(input_mp3s, audio_file)):
+                    print(
+                        f"File {audio_file} is still being written to. Skipping for now."
+                    )
+                    continue
+                try:
+                    # Transcribe the audio file
+                    transcription: pysubs2.SSAFile = audio_transcriber.transcribe(
+                        input_path
+                    )
 
-                # Transcribe the audio file
-                transcription: pysubs2.SSAFile = audio_transcriber.transcribe(
-                    input_path
-                )
+                    transcription.save(transcription_path)
 
-                transcription.save(transcription_path)
+                    # Move the processed audio file
+                    shutil.move(input_path, output_path)
 
-                # Move the processed audio file
-                shutil.move(input_path, output_path)
-
-                print(f"Processed and moved: {audio_file}")
+                    print(f"Processed and moved: {audio_file}")
+                except Exception as e:
+                    print(f"Error processing {audio_file}: {e}")
         else:
             time.sleep(1)

@@ -3,6 +3,7 @@ import os
 import uuid
 import shutil
 import gradio as gr
+import pysubs2
 
 UPLOAD_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
@@ -40,7 +41,7 @@ def save_uploaded_file(file):
 
 def handle_upload(file):
     if file is None:
-        raise gr.Error("No file uploaded. Please upload an audio file.")
+        raise gr.Error("No file selected. Please select a file to process.")
 
     file_uuid = save_uploaded_file(file)
     if file_uuid:
@@ -96,3 +97,32 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         return None
+
+
+def convert_srt_to_format(srt_path, format, include_timestamps=True):
+    try:
+        subs = pysubs2.load(srt_path)
+        if format == "txt":
+            content = (
+                "\n".join([line.text for line in subs])
+                if not include_timestamps
+                else subs.to_string("srt")
+            )
+        elif format in ["csv", "tsv"]:
+            separator = "," if format == "csv" else "\t"
+            content = (
+                f"Start{separator}End{separator}Text\n"
+                if include_timestamps
+                else f"Text\n"
+            )
+            for sub in subs:
+                if include_timestamps:
+                    content += f"{sub.start}{separator}{sub.end}{separator}{sub.text}\n"
+                else:
+                    content += f"{sub.text}\n"
+        else:  # Default to SRT
+            content = subs.to_string("srt")
+
+        return content
+    except Exception as e:
+        return f"Error converting file: {str(e)}"
