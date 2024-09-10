@@ -1,2 +1,3 @@
 *.pyc
 whisper_transcribe/uploads/*
+whisper_transcribe/__pycache__/*
