@@ -6,7 +6,7 @@ This document provides instructions for managing the Speech-to-Text (STT) Demo P
 
 The STT Demo Platform consists of several interconnected services that work together to provide a comprehensive speech-to-text solution. The main components are:
 
-1. A Python-based backend running in an Anaconda environment, managed by systemd
+1. A Python-based backend running in an Anaconda environment, managed by systemd and the user `stt_service`.
 2. A frontend website running in a Docker container
 3. Nginx for port forwarding, configured at `/etc/nginx/sites-enabled/default`
 
