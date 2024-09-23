@@ -137,27 +137,16 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     return output_path
 
 
-def convert_srt_to_format(srt_path, format, include_timestamps=True):
+def convert_srt_to_format(srt_path, format):
     try:
         subs = pysubs2.load(srt_path)
         if format == "txt":
-            content = (
-                "\n".join([line.text for line in subs])
-                if not include_timestamps
-                else subs.to_string("srt")
-            )
+            content = "\n".join([line.text for line in subs])
         elif format in ["csv", "tsv"]:
             separator = "," if format == "csv" else "\t"
-            content = (
-                f"Start{separator}End{separator}Text\n"
-                if include_timestamps
-                else f"Text\n"
-            )
+            content = f"Start{separator}End{separator}Text\n"
             for sub in subs:
-                if include_timestamps:
-                    content += f"{sub.start}{separator}{sub.end}{separator}{sub.text}\n"
-                else:
-                    content += f"{sub.text}\n"
+                content += f"{sub.start}{separator}{sub.end}{separator}{sub.text}\n"
         else:  # Default to SRT
             content = subs.to_string("srt")
 

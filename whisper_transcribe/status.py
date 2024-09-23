@@ -20,18 +20,21 @@ def check_file_status(request: gr.Request):
     srt_file_path = os.path.join(output_path, f"{uuid}.srt")
 
     if os.path.exists(srt_file_path):
-        # Read the first 10 lines for preview
-        with open(srt_file_path, "r", encoding="utf-8") as file:
-            lines = file.readlines()
-            preview = "".join(lines[:10])
-
         # Prepare other format files
         csv_file_path = handle_download(srt_file_path, "csv")
         tsv_file_path = handle_download(srt_file_path, "tsv")
         txt_file_path = handle_download(srt_file_path, "txt")
 
+        # Read the first 10 lines for preview
+        with open(txt_file_path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
+            preview = "".join(lines[:20])
+            formatted_preview = (
+                f"## Preview of your Transcription:\n\n```text\n{preview}\n```"
+            )
+
         return (
-            f"**Preview of Transcription:**\n\n{preview}",
+            formatted_preview,
             gr.update(visible=True, value=srt_file_path),
             gr.update(visible=True, value=csv_file_path),
             gr.update(visible=True, value=tsv_file_path),
@@ -39,7 +42,7 @@ def check_file_status(request: gr.Request):
         )
     else:
         return (
-            f"Transcription for UUID {uuid} not found. It may still be processing or the UUID is incorrect. This page will auto-refresh every 30 seconds.\n\n",
+            f"Transcription for UUID {uuid} not found. Please refresh the page to check again.\n\n",
             gr.update(visible=False),
             gr.update(visible=False),
             gr.update(visible=False),
@@ -72,7 +75,6 @@ with gr.Blocks() as status_app:
         <div style='font-size: 18px; line-height: 1.5;'>
         <p>Check the status of your Swiss German audio transcription here!</p>
         <p>Your UUID is in the 4th segment of the URL you were redirected to after uploading your file.</p>
-        <p>This page will auto-refresh every 30 seconds until your transcription is ready.</p>
         </div>
         """
     )
@@ -83,6 +85,8 @@ with gr.Blocks() as status_app:
     download_csv = gr.DownloadButton("Download CSV", visible=False)
     download_tsv = gr.DownloadButton("Download TSV", visible=False)
     download_txt = gr.DownloadButton("Download TXT", visible=False)
+
+    refresh_counter = gr.State()
 
     status_app.load(
         fn=check_file_status,
@@ -95,26 +99,6 @@ with gr.Blocks() as status_app:
             download_txt,
         ],
         show_api=False,
-        js="""
-        async () => {
-            let counter = 0;
-            const refreshInterval = setInterval(async () => {
-                counter++;
-                document.getElementById('refresh_counter').textContent = counter;
-                
-                // Check if any download button is visible
-                const downloadButtons = document.querySelectorAll('button[id^="component-"][id$="-download-srt"], button[id^="component-"][id$="-download-csv"], button[id^="component-"][id$="-download-tsv"], button[id^="component-"][id$="-download-txt"]');
-                const isAnyButtonVisible = Array.from(downloadButtons).some(button => !button.hidden);
-                
-                if (isAnyButtonVisible || counter >= 60) {  // Stop after 30 minutes (60 * 30 seconds)
-                    clearInterval(refreshInterval);
-                    console.log('Auto-refresh stopped');
-                } else {
-                    await document.getElementsByTagName('gradio-app')[0].querySelector('div[id^="component-"]').props.load();
-                }
-            }, 30000);  // Refresh every 30 seconds
-        }
-        """,
     )
 
 if __name__ == "__main__":
