@@ -1,4 +1,4 @@
-from moviepy.editor import VideoFileClip, AudioFileClip
+from moviepy.editor import VideoFileClip, AudioFileClip, afx
 import os
 import shutil
 import gradio as gr
@@ -6,55 +6,74 @@ import pysubs2
 import os
 import tempfile
 from sanitize_filename import sanitize
-from uuid import uuid4
+from pydub import AudioSegment, effects
 
 UPLOAD_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
 ERROR_FOLDER = "conv_error"
 BASE_URL = "https://stt4sg.fhnw.ch"  # Replace with your actual base URL
+ALLOWED_EXTENSIONS = {
+    ".mp3",
+    ".wav",
+    ".m4a",
+    ".aac",
+    ".flac",
+    ".ogg",
+    ".wma",
+    ".webm",
+    ".mp4",
+    ".mkv",
+}
 
 
-def save_uploaded_file(file):
-    if file is None:
-        return None
+def save_uploaded_file(file_path):
+    if file_path is None:
+        raise gr.Error(
+            "No file available. Please select a file or wait for the upload to finish."
+        )
 
     # Generate a file_name for the file
-    file_name = sanitize(os.path.basename(file.name.split(".")[0]))
+    file_name = sanitize(os.path.basename(file_path.name.split(".")[0]))
 
     # Get the file extension
-    _, file_extension = os.path.splitext(file.name)
+    _, file_extension = os.path.splitext(file_path.name)
 
     # Create the new filename with file_name
     new_filename = f"{file_name}{file_extension}"
 
     # Save the file
     original_path = os.path.join(UPLOAD_FOLDER, new_filename)
-    shutil.copy(file.name, original_path)
-
+    shutil.copy(file_path.name, original_path)
     conversion_result = convert_to_mp3_16khz(original_path)
-
-    if conversion_result:
-        # Optionally, remove the original file to save space
-        os.remove(original_path)
-        print(f"Converted and saved as MP3: {conversion_result}")
-    else:
-        print(f"Conversion failed. Original file retained: {original_path}")
-
-    return file_name
+    return conversion_result
 
 
-def handle_upload(file):
-    if file is None:
+def handle_upload(file_path):
+    if file_path is None:
         raise gr.Error(
-            "No file available. Please select file or wait for the upload to finish."
+            "No file available. Please select a file or wait for the upload to finish."
         )
+    # Get the file extension and validate it
+    filename = file_path.name
+    file_ext = os.path.splitext(filename)[1].lower()
 
-    file_name = save_uploaded_file(file)
-    if file_name:
+    if file_ext not in ALLOWED_EXTENSIONS:
+        raise gr.Error(
+            f"Unsupported file format '{file_ext}'. Please upload an audio file in one of the following formats: "
+            f"{', '.join(ALLOWED_EXTENSIONS)}"
+        )
+    try:
+        file_name = save_uploaded_file(file_path)
         status_url = f"{BASE_URL}/long_v3/status?uuid={file_name}"
         return f"File uploaded & converted successfully. Check the status here: [Transcription Status]({status_url})"
-    else:
-        raise gr.Error("Failed to upload file. Please try again.")
+    except Exception as e:
+        # Log the exception details if needed
+        # Optionally, log the exception here
+        print(f"Error during conversion: {e}")
+
+        os.makedirs(os.path.join(UPLOAD_FOLDER, ERROR_FOLDER), exist_ok=True)
+        shutil.move(file_path, os.path.join(UPLOAD_FOLDER, ERROR_FOLDER, file_path))
+        raise gr.Error(f"An error occurred while processing your file: {e}")
 
 
 def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
@@ -81,45 +100,41 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     # Create the lock file path
     lock_path = f"{output_path}.lock"
 
-    try:
-        # Determine if the input is a video or audio file
-        _, ext = os.path.splitext(input_path)
-        is_video = ext.lower() in [".mp4", ".avi", ".mov", ".flv", ".wmv"]
+    # Determine if the input is a video or audio file
+    _, ext = os.path.splitext(input_path)
+    is_video = ext.lower() in [".mp4", ".avi", ".mov", ".flv", ".wmv"]
 
-        # Load the file
-        if is_video:
-            clip = VideoFileClip(input_path)
-            audio = clip.audio
-        else:
-            audio = AudioFileClip(input_path)
+    # Load the file
+    if is_video:
+        clip = VideoFileClip(input_path)
+        audio = clip.audio
+    else:
+        audio = AudioFileClip(input_path)
 
-        # Create lock file
-        with open(lock_path, "w") as lock_file:
-            lock_file.write("Conversion in progress...")
+    # Create lock file
+    with open(lock_path, "w") as lock_file:
+        lock_file.write("Conversion in progress...")
 
-        # Write the audio to an MP3 file with 16000 Hz sample rate
-        audio.write_audiofile(output_path, fps=16000, bitrate="128k")
+    # Write the audio to an MP3 file with 16000 Hz sample rate
+    audio.write_audiofile(output_path, fps=16000, bitrate="128k")
+    audio.close()
 
-        # Close the clips to free up system resources
-        audio.close()
-        if is_video:
-            clip.close()
+    # Close the clips to free up system resources
+    if is_video:
+        clip.close()
 
-        print(f"Successfully converted {input_path} to MP3 (16000 Hz)")
-        print(f"Saved as: {output_path}")
+    # Normalize audio
+    audio = AudioSegment.from_file(output_path)
+    normalized_audio = effects.normalize(audio)
+    normalized_audio.export(output_path, format="mp3")
 
-        # Remove lock file
-        os.remove(lock_path)
+    print(f"Successfully converted {input_path} to MP3 (16000 Hz)")
+    print(f"Saved as: {output_path}")
 
-        return output_path
+    # Remove lock file
+    os.remove(lock_path)
 
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        os.makedirs(os.path.join(UPLOAD_FOLDER, ERROR_FOLDER), exist_ok=True)
-        shutil.move(
-            input_path, os.path.join(UPLOAD_FOLDER, ERROR_FOLDER, input_filename)
-        )
-        return None
+    return output_path
 
 
 def convert_srt_to_format(srt_path, format, include_timestamps=True):

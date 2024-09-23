@@ -107,6 +107,7 @@ if __name__ == "__main__":
                 )
                 if is_file_locked(os.path.join(input_mp3s, audio_file)):
                     print(f"File {audio_file} is locked. Skipping for now.")
+                    time.sleep(5)
                     continue
                 else:
                     try:
