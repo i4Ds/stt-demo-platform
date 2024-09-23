@@ -2,4 +2,3 @@
 whisper_transcribe/__pycache__/*
 whisper_transcribe/data/*
 *.pyc
-whisper_transcribe/__pycache__/transcribe.cpython-311.pyc
