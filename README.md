@@ -29,13 +29,16 @@ Three Python services work together to offer the long_api:
    - Managed by `stt-status.service`
    - Accessible via [https://stt4sg.fhnw.ch/long_v3/status/](https://stt4sg.fhnw.ch/long_v3/status/)
 
+### Deployment
+They are deployed by an user `stt_service` and their deployment is managed by systemd.
+
 ## Frontend
 
 The main website is hosted in a Docker container:
 
 - Configuration: `/srv/stt-demo-platform/docker-compose.yml`
 - Source code: `/srv/stt-demo-platform/stt4sg-demo-app`
-- URL: [https://stt4sg.fhnw.ch/long_v3/](https://stt4sg.fhnw.ch/long_v3/)
+- URL: [https://stt4sg.fhnw.ch/](https://stt4sg.fhnw.ch/)
 
 ### Updating the Frontend
 
