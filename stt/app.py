@@ -3,16 +3,20 @@ import gradio as gr
 from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
 from pydub import AudioSegment, effects
+import os
+from sanitize_filename import sanitize
 
 THEME = gr.themes.Soft()
 MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v2"
-
+FOLDER = "data"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = WhisperModel(MODEL, device=device, compute_type="int8")
 
 
 def transcribe(path) -> tuple[str, list[Segment]]:
+    if path is None:
+        return ""
     # Normalize audio
     audio = AudioSegment.from_file(path)
     normalized_audio = effects.normalize(audio)
@@ -22,7 +26,12 @@ def transcribe(path) -> tuple[str, list[Segment]]:
         segments, _ = model.transcribe(
             path, language="de", without_timestamps=True, vad_filter=False
         )
-        return fw_segments_to_text(segments)
+        # Save result
+        text = fw_segments_to_text(segments)
+        path = os.path.join(FOLDER, sanitize(text) + ".mp3")
+        normalized_audio.export(path, format="mp3")
+        # Return result
+        return text
 
 
 def fw_segments_to_text(segments: list[Segment]) -> str:
@@ -66,7 +75,7 @@ with app:
         <ul>
             <li><a href="https://github.com/guillaumekln/faster-whisper" target="_blank">SYSTRAN/faster-whisper</a> for fast transcription</li>
         </ul>
-        <p><strong>Note:</strong> The int8-quantized model is currently running on a CPU, so expect more latency and a lower quality<p>
+        <p><strong>Note:</strong> The int8-quantized model is currently running on a CPU, so expect more latency and maybe a lower quality.<p>
     </div>
     """
     )
