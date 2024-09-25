@@ -21,8 +21,7 @@ def transcribe(inputs) -> tuple[str, list[Segment]]:
         segments, _ = model.transcribe(
             inputs, language="de", without_timestamps=True, vad_filter=False
         )
-        segments = fw_segments_to_text(segments)
-        return
+        return fw_segments_to_text(segments)
 
 
 def fw_segments_to_text(segments: list[Segment]) -> str:
@@ -89,7 +88,7 @@ with app:
     gr.Interface(
         fn=transcribe,
         inputs=[
-            gr.Audio(sources="microphone", type="numpy"),
+            gr.Audio(sources="microphone", type="filepath"),
         ],
         outputs="text",
         theme=THEME,
