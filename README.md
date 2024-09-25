@@ -29,8 +29,13 @@ Three Python services work together to offer the long_api:
    - Managed by `stt-status.service`
    - Accessible via [https://stt4sg.fhnw.ch/long_v3/status/](https://stt4sg.fhnw.ch/long_v3/status/)
 
+4. **Short Transcription Service** (`stt/app.py`)
+   - Provides a web interface for short transcriptions
+   - Managed by `stt-short.service`
+   - Accessible via [https://stt4sg.fhnw.ch/stt/](https://stt4sg.fhnw.ch/stt/)
+
 ### Deployment
-They are deployed by an user `stt_service` and their deployment is managed by systemd.
+They are deployed by an user `stt_service`, have an conda enviroment `stt_env` and their deployment is managed by systemd.
 
 ## Frontend
 
