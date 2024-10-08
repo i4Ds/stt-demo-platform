@@ -68,7 +68,7 @@ with app:
     gr.HTML(
         """
     <div class="info-box">
-        <p><strong>Transcribe Swiss German audio files of up to 500MB!</strong></p>
+        <p><strong>Transcribe Swiss German audio live in your Browser!</strong></p>
         <p>This demo uses a model trained on Swiss German data by the 
         <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Manfred Vogel.</p>
         <p>It combines:</p>
