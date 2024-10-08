@@ -31,7 +31,7 @@ Three Python services work together to offer the long_api:
 
 4. **Short Transcription Service** (`stt/app.py`)
    - Provides a web interface for short transcriptions
-   - Managed by `stt-short.service`
+   - Managed by `stt.service`
    - Accessible via [https://stt4sg.fhnw.ch/stt/](https://stt4sg.fhnw.ch/stt/)
 
 ### Deployment
