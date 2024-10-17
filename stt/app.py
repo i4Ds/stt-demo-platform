@@ -4,33 +4,52 @@ from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
 from pydub import AudioSegment, effects
 import os
-from sanitize_filename import sanitize
+from datetime import datetime
+import csv
+
 
 THEME = gr.themes.Soft()
 MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v2"
 FOLDER = "data"
+CSV_PATH = FOLDER + "/data.csv"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = WhisperModel(MODEL, device=device, compute_type="int8")
 
 
-def transcribe(path) -> tuple[str, list[Segment]]:
-    if path is None:
+def transcribe(path: str, csv_path: str = CSV_PATH) -> tuple[str, list]:
+    if path is None or os.stat(path).st_size < 1024 * 10:  # 5 KB
         return ""
+
     # Normalize audio
     audio = AudioSegment.from_file(path)
     normalized_audio = effects.normalize(audio)
-    path = path.replace(".wav", "_normalized.mp3")
-    normalized_audio.export(path, format="mp3")
+
+    # Create a timestamp for the audio name
+    timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    audio_filename = f"{timestamp}_normalized.mp3"
+    normalized_audio_path = os.path.join(FOLDER, audio_filename)
+
+    # Export the normalized audio
+    normalized_audio.export(normalized_audio_path, format="mp3")
+
     with torch.inference_mode():
         segments, _ = model.transcribe(
-            path, language="de", without_timestamps=True, vad_filter=False
+            normalized_audio_path,
+            language="de",
+            without_timestamps=True,
+            vad_filter=False,
         )
-        # Save result
+
+        # Convert segments to text
         text = fw_segments_to_text(segments)
-        path = os.path.join(FOLDER, sanitize(text) + ".mp3")
-        normalized_audio.export(path, format="mp3")
-        # Return result
+
+        # Append the result to a CSV file
+        with open(csv_path, mode="a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([audio_filename, text])
+
+        # Return the transcribed text
         return text
 
 
