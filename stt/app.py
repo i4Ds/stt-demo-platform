@@ -9,7 +9,7 @@ import csv
 
 
 THEME = gr.themes.Soft()
-MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v2"
+MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v4"
 FOLDER = "data"
 CSV_PATH = FOLDER + "/data.csv"
 

@@ -32,7 +32,7 @@ class AudioTranscriber:
             device if device else "cuda" if torch.cuda.is_available() else "cpu"
         )
         self.transcribe_model = whisperx.load_model(
-            "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v2",
+            "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v4",
             self.device,
             compute_type="float16" if torch.cuda.is_available() else "float32",
         )
