@@ -1,6 +1,6 @@
 import gradio as gr
 import os
-from utils import UPLOAD_FOLDER, convert_srt_to_format
+from utils import UPLOAD_BASE_FOLDER, convert_srt_to_format
 from transcribe import TRANSCRIBED_FOLDER
 
 
@@ -22,7 +22,7 @@ def check_file_status(request: gr.Request):
             gr.update(visible=False),
         )
 
-    output_path = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
+    output_path = os.path.join(UPLOAD_BASE_FOLDER, TRANSCRIBED_FOLDER)
     srt_file_path = os.path.join(output_path, f"{uuid}.srt")
 
     if os.path.exists(srt_file_path):

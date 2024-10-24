@@ -3,7 +3,7 @@ import torch
 import whisperx
 import torchaudio
 from whisperx.alignment import DEFAULT_ALIGN_MODELS_HF
-from utils import convert_to_mp3_16khz, UPLOAD_FOLDER, CONVERTED_FOLDER
+from utils import convert_to_mp3_16khz, UPLOAD_BASE_FOLDER, CONVERTED_FOLDER
 import os
 import shutil
 import time
@@ -84,10 +84,10 @@ class AudioTranscriber:
 if __name__ == "__main__":
     audio_transcriber = AudioTranscriber()
     # Create path and folders
-    input_mp3s = os.path.join(UPLOAD_FOLDER, CONVERTED_FOLDER)
-    output_mp3s = os.path.join(UPLOAD_FOLDER, PROCESSED_FOLDER)
-    output_srts = os.path.join(UPLOAD_FOLDER, TRANSCRIBED_FOLDER)
-    error_folder = os.path.join(UPLOAD_FOLDER, "trans_error")
+    input_mp3s = os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
+    output_mp3s = os.path.join(UPLOAD_BASE_FOLDER, PROCESSED_FOLDER)
+    output_srts = os.path.join(UPLOAD_BASE_FOLDER, TRANSCRIBED_FOLDER)
+    error_folder = os.path.join(UPLOAD_BASE_FOLDER, "trans_error")
     os.makedirs(output_mp3s, exist_ok=True)
     os.makedirs(output_srts, exist_ok=True)
     os.makedirs(error_folder, exist_ok=True)

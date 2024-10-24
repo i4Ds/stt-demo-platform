@@ -8,7 +8,7 @@ import tempfile
 from sanitize_filename import sanitize
 from pydub import AudioSegment, effects
 
-UPLOAD_FOLDER = "data"
+UPLOAD_BASE_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
 ERROR_FOLDER = "conv_error"
 BASE_URL = "https://stt4sg.fhnw.ch"  # Replace with your actual base URL
@@ -42,9 +42,10 @@ def save_uploaded_file(file_path):
     new_filename = f"{file_name}{file_extension}"
 
     # Save the file
-    original_path = os.path.join(UPLOAD_FOLDER, new_filename)
+    original_path = os.path.join(UPLOAD_BASE_FOLDER, new_filename)
     shutil.copy(file_path.name, original_path)
     conversion_result = convert_to_mp3_16khz(original_path)
+    os.remove(original_path)
     return conversion_result
 
 
@@ -71,8 +72,10 @@ def handle_upload(file_path):
         # Optionally, log the exception here
         print(f"Error during conversion: {e}")
 
-        os.makedirs(os.path.join(UPLOAD_FOLDER, ERROR_FOLDER), exist_ok=True)
-        shutil.move(file_path, os.path.join(UPLOAD_FOLDER, ERROR_FOLDER, file_path))
+        os.makedirs(os.path.join(UPLOAD_BASE_FOLDER, ERROR_FOLDER), exist_ok=True)
+        shutil.move(
+            file_path, os.path.join(UPLOAD_BASE_FOLDER, ERROR_FOLDER, file_path)
+        )
         raise gr.Error(f"An error occurred while processing your file: {e}")
 
 

@@ -1,12 +1,12 @@
 import gradio as gr
 import os
-from utils import handle_upload, UPLOAD_FOLDER
+from utils import handle_upload, UPLOAD_BASE_FOLDER
 
 # Configuration
 THEME = gr.themes.Soft()
 
 # Ensure the upload folder exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(UPLOAD_BASE_FOLDER, exist_ok=True)
 
 # Create the Gradio interface
 with gr.Blocks(theme=THEME) as app:

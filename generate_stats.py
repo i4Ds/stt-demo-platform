@@ -20,16 +20,18 @@ def get_file_stats(folder_path):
 def analyze_file_stats(file_stats):
     date_counts = defaultdict(int)
     extensions = defaultdict(int)
+    files_by_date = defaultdict(list)
 
     for stat in file_stats:
         date_counts[stat["creation_date"]] += 1
         _, ext = os.path.splitext(stat["filename"])
         extensions[ext.lower()] += 1
+        files_by_date[stat["creation_date"]].append(stat["filename"])
 
-    return date_counts, extensions
+    return date_counts, extensions, files_by_date
 
 
-def generate_summary(file_stats, date_counts, extensions):
+def generate_summary(file_stats, date_counts, extensions, files_by_date):
     summary = "Folder Analysis Summary:\n\n"
     summary += f"Total number of files: {len(file_stats)}\n"
 
@@ -48,6 +50,10 @@ def generate_summary(file_stats, date_counts, extensions):
     summary += "\nFiles created per day:\n"
     for date, count in sorted(date_counts.items()):
         summary += f"{date}: {count} files\n"
+        summary += "Files:\n"
+        for file in files_by_date[date]:
+            if file.endswith(".srt"):
+                summary += f"  - {file}\n"
 
     return summary
 
@@ -57,8 +63,8 @@ def main():
 
     file_stats = get_file_stats(FOLDER_PATH)
 
-    date_counts, extensions = analyze_file_stats(file_stats)
-    summary = generate_summary(file_stats, date_counts, extensions)
+    date_counts, extensions, files_by_date = analyze_file_stats(file_stats)
+    summary = generate_summary(file_stats, date_counts, extensions, files_by_date)
 
     with open(os.path.join(output_folder, "summary_report.txt"), "w") as f:
         f.write(summary)
