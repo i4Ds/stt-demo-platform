@@ -6,7 +6,8 @@ from pydub import AudioSegment, effects
 import os
 from datetime import datetime
 import csv
-
+import fcntl
+import time
 
 THEME = gr.themes.Soft()
 MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v4"
@@ -18,7 +19,12 @@ model = WhisperModel(MODEL, device=device, compute_type="int8")
 
 
 def transcribe(path: str, csv_path: str = CSV_PATH) -> tuple[str, list]:
-    if path is None or os.stat(path).st_size < 1024 * 10:  # 5 KB
+    if path is None:
+        return ""
+    # Necessary hack, if someone clicks to fast :(
+    if not os.path.exists(path):
+        time.sleep(5)
+    if path is None or os.stat(path).st_size < 1024 * 10:  # 10 KB
         return ""
 
     # Normalize audio
@@ -46,8 +52,10 @@ def transcribe(path: str, csv_path: str = CSV_PATH) -> tuple[str, list]:
 
         # Append the result to a CSV file
         with open(csv_path, mode="a", newline="") as file:
+            fcntl.flock(file, fcntl.LOCK_EX)
             writer = csv.writer(file)
             writer.writerow([audio_filename, text])
+            fcntl.flock(file, fcntl.LOCK_UN)
 
         # Return the transcribed text
         return text
@@ -107,6 +115,7 @@ with app:
         <ol>
             <li>Click on <em>Record from microphone</em> to start recording.</li>
             <li>Stop recording by clicking on <em>Stop</em>.</li>
+            <li>Wait a couple of seconds, until the upload is successful.</li>
             <li>Click on <em>Submit</em>.</li>
             <li>Wait for the transcription to complete.</li>
         </ol>

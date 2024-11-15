@@ -1,9 +1,9 @@
 Folder Analysis Summary:
 
-Total number of files: 785
-Date range: 2024-09-10 to 2024-10-24
+Total number of files: 1210
+Date range: 2024-09-10 to 2024-11-15
 Day with most files created: 2024-09-17 (277 files)
-Most common file extension: .srt (480 files)
+Most common file extension: .srt (623 files)
 
 Files created per day:
 2024-09-10: 19 files
@@ -381,7 +381,7 @@ Files:
   - schonleber-1_uiLyrdGi.srt
   - schonleber-1_EdY35L0K.srt
   - schonleber-1_ECGMhtje.srt
-2024-09-26: 60 files
+2024-09-26: 56 files
 Files:
   - 291.srt
   - 296.srt
@@ -391,7 +391,6 @@ Files:
   - xyz-111.srt
   - 299.srt
   - 292.srt
-  - 01_eval-recording.srt
   - 294.srt
   - 293.srt
   - 302.srt
@@ -526,11 +525,11 @@ Files:
   - 03 Audio Interview Artist Lending Painpoints.srt
   - 04 Audio Interview Artist Lending Painpoints.srt
   - p05.srt
-2024-10-20: 5 files
+2024-10-20: 2 files
 Files:
   - 4rgtdfvwvcsd.srt
   - fgredasvcouzihewb.srt
-2024-10-21: 17 files
+2024-10-21: 14 files
 Files:
   - vmail_41795895379_50_20241021081738.srt
   - Interview Petra Hodgson.srt
@@ -542,7 +541,7 @@ Files:
   - Regina Hofstetter_Nick_Chapella_06.srt
   - Ronja_1.srt
   - Regina Hofstetter_Ben_Chapella 06.srt
-2024-10-23: 16 files
+2024-10-23: 10 files
 Files:
   - ch_zh_0001.srt
   - ATELIER - Juan Pablo Gutierrez 13.srt
@@ -551,13 +550,14 @@ Files:
   - 3frzucbethbdzfewsd.srt
   - Edona.srt
   - videoplayback.srt
-2024-10-24: 37 files
+2024-10-24: 42 files
 Files:
+  - replicate-prediction-2ii2qq3bxbvbkco22fpipmrazy.srt
   - ch_sg_0001.srt
   - Sprache 001.srt
   - ch_sg_0000.srt
   - A_Radio_Canal 3 d_2022-11-07_10.srt
-  - ch_sg_0002.srt
+  - tmp2ptaz9rn.srt
   - Jasha.srt
   - hunger test.srt
   - Interview-MG.srt
@@ -566,3 +566,190 @@ Files:
   - Interview Matthias Gehrig.srt
   - Igor_Loebl_Aufnahme-Interview_.srt
   - ch_sg_0003.srt
+  - 2024_10_17_15_56_17_normalized.srt
+2024-10-25: 7 files
+Files:
+  - ProbeIPATasks-76zfvtczivczfc65yresees.srt
+  - Sportplatzstrasse.srt
+  - WS450959.srt
+  - Interview mit Mami_4.srt
+2024-10-26: 3 files
+Files:
+  - DBA - Research x Thomas Stocker-20241002_140342-Meeting Recording_cut.srt
+  - DBA - Research x Thomas Stocker-20241002_140342-Meeting Recording.srt
+  - Interview_02.srt
+2024-10-27: 7 files
+Files:
+  - InterviewWR-regwfvbuziobhkujuzi3re.srt
+2024-10-28: 6 files
+Files:
+  - person 7.srt
+  - Master Podcast 1 V2 low res.srt
+  - Interview Corinne Solarpanel-20241028_113142-Meeting Recording.srt
+2024-10-29: 16 files
+Files:
+  - Interview1_Ladis_111024.srt
+  - ch_sg_0002.srt
+  - Mike_Irion_Aufnahme_Interview.srt
+  - Lukas_Wildenau_24.srt
+2024-10-30: 2 files
+Files:
+  - Olaf_25.srt
+  - 01_eval-recording.srt
+2024-10-31: 14 files
+Files:
+  - Dieter.srt
+  - Sequenz-01.srt
+  - Sequenz 01.srt
+  - person 16.srt
+  - Gruppe_1_Frageblock_F1.srt
+2024-11-01: 33 files
+Files:
+  - Gruppe_1_Frageblock_F3.srt
+  - Gruppe_1_Frageblock_F4.srt
+  - Gruppe_2_Frageblock_F1.srt
+  - Gruppe_1_Frageblock_F7.srt
+  - Gruppe_2_Frageblock_F2.srt
+  - Gruppe_1_Frageblock_F6.srt
+  - Gruppe_2_Frageblock_F3.srt
+  - Gruppe_1_Frageblock_F5.srt
+  - Gruppe_1_Mars.srt
+2024-11-02: 14 files
+Files:
+  - y4u5i-b3yoq.srt
+  - Gruppe_2_Frageblock_F4.srt
+  - Bildungszentrum für Wirtschaft Weinfelden - Weiterbildung 15.srt
+  - Gruppe_2_Frageblock_F5.srt
+  - 0619bb41c3360d1c87843a54729a6905006c5d4b8986daea8c68b53ae02b0b79.srt
+2024-11-03: 33 files
+Files:
+  - InterviewRemoZingg1550.srt
+  - InterviewRemoZingg.srt
+  - Bildungszentrum für Wirtschaft Weinfelden - Weiterbildung.srt
+  - M2.srt
+  - Gruppe_2_Mars.srt
+  - Gruppe_2_Frageblock_F7.srt
+  - InterviewRemoZingg1553.srt
+  - Gruppe_2_Frageblock_F6.srt
+  - Gruppe_1_Frageblock_F2.srt
+  - Gruppe_1_Frageblock_F2_2.srt
+  - InterviewRemoZingg 1.srt
+  - Gruppe_2_Frageblock_F8.srt
+2024-11-04: 4 files
+Files:
+  - R07_0002.srt
+2024-11-05: 15 files
+Files:
+  - tmpazqg14e9.srt
+  - STE-002.srt
+  - STE-001_1_02.srt
+  - Daniela_Zusammenfassung.srt
+  - person 2.srt
+  - STE-001_01.srt
+2024-11-06: 45 files
+Files:
+  - T056_20241024.srt
+  - T055_20241024.srt
+  - T053_20241024.srt
+  - T054_20241024.srt
+  - T049_20241024.srt
+  - Darryl1.srt
+  - Interview_Halbmarathon_Laufer.srt
+  - T052_20241024.srt
+  - Transkribieren.srt
+  - T051_20241024.srt
+  - T050_20241024.srt
+  - Gian_Badraun_Beti.srt
+2024-11-07: 5 files
+Files:
+  - InterviewDarabAli.srt
+  - Claus_Nesensohn_Aufnahme.srt
+2024-11-08: 29 files
+Files:
+  - Ferienpunktesystem FPS.srt
+  - grabación-2024-10-24-08-25-57.srt
+  - T058_20241024.srt
+  - T060_20241024.srt
+  - Aufnahme.srt
+  - T059_20241024.srt
+  - darryl2.srt
+  - 13.srt
+  - Test für Schwizer KI.srt
+  - Interview.srt
+  - T057_20241024.srt
+2024-11-09: 12 files
+Files:
+  - T061_20241024.srt
+  - S9_000404_0012_mp3.srt
+  - T062_20241024.srt
+2024-11-10: 67 files
+Files:
+  - OST - 2024-10-26 10_17_19.srt
+  - T066_20241024.srt
+  - T074_20241024.srt
+  - T068_20241024.srt
+  - T078_20241024.srt
+  - T077_20241024.srt
+  - Aufzeichnung.srt
+  - T070_20241024.srt
+  - T080_20241024.srt
+  - T081_20241024.srt
+  - AUDIO-2024-11-10-17-43-16 online-audio-converter.srt
+  - Tram und Bass.srt
+  - T069_20241024.srt
+  - T079_20241024.srt
+  - T067_20241024.srt
+  - T064_20241024.srt
+  - T065_20241024.srt
+  - T071_20241024.srt
+  - T063_20241024.srt
+  - T073_20241024.srt
+  - T072_20241024.srt
+  - OST - Ostschweizer Fachhochschule - Campus St.srt
+2024-11-11: 66 files
+Files:
+  - Grusswort.srt
+  - T086_20241024.srt
+  - T088_20241024.srt
+  - T094_20241024.srt
+  - T089_20241024.srt
+  - T095_20241024.srt
+  - T085_20241024.srt
+  - T091_20241024.srt
+  - 2024-11-04_14-36-17.srt
+  - T087_20241024.srt
+  - T093_20241024.srt
+  - T090_20241024.srt
+  - T096_20241024.srt
+  - T084_20241024.srt
+  - T097_20241024.srt
+  - T083_20241024.srt
+  - T082_20241024.srt
+  - T092_20241024.srt
+2024-11-12: 11 files
+Files:
+  - 0a413e668a704d52aa3c0b45200179b9.srt
+  - Basel.srt
+  - 240421_1419.srt
+  - 000407_0013.srt
+  - 240421_1501.srt
+2024-11-13: 14 files
+Files:
+  - Sternen.srt
+  - Aufnahme_1_EV_horiz.srt
+  - Video11.srt
+  - Aufnahme 1 EV horiz.srt
+  - MTranskript.srt
+2024-11-14: 5 files
+Files:
+  - Driving_Forces_CTO_Marty_audio.srt
+  - Achtsamkeit 1 - Atem.srt
+2024-11-15: 28 files
+Files:
+  - 67211ecd520c24211abedff0-n.srt
+  - 671f45f0520c24211abedbfa-n.srt
+  - 66b30e0fc02e5a253653e352-autismus-zentrum7-gut-13min.srt
+  - Interview 1.srt
+  - Reportage mit Dario.srt
+  - Xiaomi_Phone_66fbf038a05cea46ce2ed357-llorenz-15min.srt
+  - 66b30e0fc02e5a253653e352-autismus-zentrum7 gut 1-13min.srt
