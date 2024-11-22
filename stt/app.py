@@ -125,7 +125,9 @@ with app:
     gr.Interface(
         fn=transcribe,
         inputs=[
-            gr.Audio(sources="microphone", type="filepath"),
+            gr.Audio(
+                sources="microphone", type="filepath", min_length=3, max_length=60
+            ),
         ],
         outputs="text",
         theme=THEME,
