@@ -24,6 +24,8 @@ ALLOWED_EXTENSIONS = {
     ".mp4",
     ".mkv",
 }
+# Create the paths
+os.makedirs(UPLOAD_BASE_FOLDER, exist_ok=True)
 
 
 def save_uploaded_file(file_path):

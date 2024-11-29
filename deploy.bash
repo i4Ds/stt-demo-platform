@@ -18,6 +18,12 @@ log() {
 # Start deployment
 log "Starting deployment..."
 
+# Check if the destination directory exists
+if [ ! -d "$DEST_DIR" ]; then
+    log "Destination directory $DEST_DIR does not exist. Creating it..."
+    sudo mkdir -p "$DEST_DIR"
+fi
+
 # Copy files to the destination directory using rsync
 log "Copying files from $SOURCE_DIR to $DEST_DIR..."
 sudo rsync -av --delete "$SOURCE_DIR"/ "$DEST_DIR" >> "$LOG_FILE" 2>&1

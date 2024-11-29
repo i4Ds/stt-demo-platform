@@ -34,6 +34,7 @@ def transcribe(path: str, csv_path: str = CSV_PATH) -> tuple[str, list]:
     # Create a timestamp for the audio name
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     audio_filename = f"{timestamp}_normalized.mp3"
+    os.makedirs(FOLDER, exist_ok=True)
     normalized_audio_path = os.path.join(FOLDER, audio_filename)
 
     # Export the normalized audio
