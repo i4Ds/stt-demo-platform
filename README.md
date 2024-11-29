@@ -41,15 +41,15 @@ They are deployed by an user `stt_service`, have an conda enviroment `stt_env` a
 
 The main website is hosted in a Docker container:
 
-- Configuration: `/srv/stt-demo-platform/docker-compose.yml`
-- Source code: `/srv/stt-demo-platform/stt4sg-demo-app`
+- Configuration: `stt-demo-platform/docker-compose.yml`
+- Source code: `stt-demo-platform/stt4sg-demo-app`
 - URL: [https://stt4sg.fhnw.ch/](https://stt4sg.fhnw.ch/)
 
 ### Updating the Frontend
 
 To make changes to the main website:
 
-1. Edit the files in `/srv/stt-demo-platform/stt4sg-demo-app`
+1. Edit the files in `stt-demo-platform/stt4sg-demo-app`
 2. Rebuild the Docker container:
    ```bash
    sudo docker compose up -d --build frontend

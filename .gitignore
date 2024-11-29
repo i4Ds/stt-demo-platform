@@ -3,3 +3,4 @@ whisper_transcribe/__pycache__/*
 whisper_transcribe/data/*
 *.pyc
 stt/data/*
+deploy.log
