@@ -51,6 +51,13 @@ def save_uploaded_file(file_path):
     return conversion_result
 
 
+def count_files_in_queue(
+    folder_path=os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
+):
+    files = os.listdir(folder_path)
+    return len(files)
+
+
 def handle_upload(file_path):
     if file_path is None:
         raise gr.Error(
@@ -68,7 +75,8 @@ def handle_upload(file_path):
     try:
         file_name = save_uploaded_file(file_path)
         status_url = f"{BASE_URL}/long_v3/status?uuid={file_name}"
-        return f"File uploaded & converted successfully. Check the status here: [Transcription Status]({status_url})"
+        return "**✅ File uploaded and converted successfully!**[Check transcription status here]({})".format(status_url)
+
     except Exception as e:
         # Log the exception details if needed
         # Optionally, log the exception here

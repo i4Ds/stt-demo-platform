@@ -54,6 +54,7 @@ def check_file_status(request: gr.Request):
         error_message = (
             f"<div class='error-box'>"
             f"<strong>Transcription not found:</strong> UUID {uuid} not found. Please refresh the page to check again."
+            f"<strong>Note: </strong>You can close the window and reopen this URL later (Save it!) to check on your transcription."
             f"</div>"
         )
         return (
