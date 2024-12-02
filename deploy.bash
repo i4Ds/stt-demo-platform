@@ -26,7 +26,7 @@ fi
 
 # Copy files to the destination directory using rsync
 log "Copying files from $SOURCE_DIR to $DEST_DIR..."
-sudo rsync -av --delete "$SOURCE_DIR"/ "$DEST_DIR" >> "$LOG_FILE" 2>&1
+sudo rsync -av "$SOURCE_DIR"/ "$DEST_DIR" >> "$LOG_FILE" 2>&1
 
 # Change ownership to stt_service user and group
 log "Changing ownership of $DEST_DIR to $USER:$GROUP..."

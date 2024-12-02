@@ -40,6 +40,9 @@ def check_file_status(request: gr.Request):
                 f"<h2>Preview of your Transcription:</h2>"
                 f"<pre>{preview}</pre>"
                 f"</div>"
+                f"<div class='feedback-box'>"
+                f"<p><strong>Feedback: </strong> Please tell us what went well and what didn't: <a href='https://forms.office.com/e/uHfVmjsjJr' target='_blank'>Feedback Form</a></p>"
+                f"</div>"
             )
 
         return (

@@ -48,7 +48,7 @@ with gr.Blocks(theme=THEME) as app:
 
         </ul>
         <p><strong>Note:</strong> The model is currently running on a CPU, so expect the transcription to take around the same time as the audio length.</p>
-        <p><strong>Note:</strong> Currently, there are {count_files_in_queue()} files in the queue. </p>
+        <p><strong>Note:</strong> Currently, there are <strong>{count_files_in_queue()}</strong> files in the queue. </p>
     </div>
     """
     )
@@ -64,6 +64,14 @@ with gr.Blocks(theme=THEME) as app:
             <li>Click on <em>'Convert & Transcribe'</em>, which converts your file.</li>
             <li>Go to the status page (the URL appears after a successful conversion and some sanity checks) to download the transcription file once it's ready.</li>
         </ol>
+    </div>
+    """
+    )
+    # Feedback Box
+    gr.HTML(
+        """
+    <div class="feedback-box">
+        <p><strong>Feedback: </strong> Please tell us what went well and what didn't: <a href="https://forms.office.com/e/uHfVmjsjJr" target="_blank">Feedback Form</a></p>
     </div>
     """
     )

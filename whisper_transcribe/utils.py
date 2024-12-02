@@ -54,6 +54,8 @@ def save_uploaded_file(file_path):
 def count_files_in_queue(
     folder_path=os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
 ):
+    if not os.path.exists(folder_path):
+        return 0
     files = os.listdir(folder_path)
     return len(files)
 
@@ -75,7 +77,7 @@ def handle_upload(file_path):
     try:
         file_name = save_uploaded_file(file_path)
         status_url = f"{BASE_URL}/long_v3/status?uuid={file_name}"
-        return "**✅ File uploaded and converted successfully!**[Check transcription status here]({})".format(status_url)
+        return "**✅ File uploaded and converted successfully!** [Check transcription status here]({})".format(status_url)
 
     except Exception as e:
         # Log the exception details if needed
