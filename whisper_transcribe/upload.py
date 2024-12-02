@@ -42,8 +42,10 @@ with gr.Blocks(theme=THEME) as app:
         <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Manfred Vogel.</p>
         <p>It combines:</p>
         <ul>
-            <li><a href="https://github.com/guillaumekln/faster-whisper" target="_blank">SYSTRAN/faster-whisper</a> for fast transcription</li>
-            <li><a href="https://github.com/m-bain/whisperX" target="_blank">m-bain/whisperX</a> for precise word-level timestamps</li>
+            <li><a href="https://github.com/openai/whisper" target="_blank">OpenAI/whisper</a> for transcription.</li>
+            <li><a href="https://github.com/Systran/faster-whisper" target="_blank">Systran/faster-whisper</a> for quantization and performance.</li>
+            <li><a href="https://github.com/m-bain/whisperX" target="_blank">m-bain/whisperX</a> for deployment and VAD preprocessing.</li>
+
         </ul>
         <p><strong>Note:</strong> The model is currently running on a CPU, so expect the transcription to take around the same time as the audio length.</p>
         <p><strong>Note:</strong> Currently, there are {count_files_in_queue()} files in the queue. </p>
@@ -59,8 +61,8 @@ with gr.Blocks(theme=THEME) as app:
         <ol>
             <li>Select or drag & drop your audio file (up to 100MB).</li>
             <li>Wait for the file to upload completely.</li>
-            <li>Click on <em>'Convert & Transcribe'</em>.</li>
-            <li>Go to the status page (which appears after clicking <em>'Convert & Transcribe'</em>) to monitor the transcription progress and download the transcription file once it's ready.</li>
+            <li>Click on <em>'Convert & Transcribe'</em>, which converts your file.</li>
+            <li>Go to the status page (the URL appears after a successful conversion and some sanity checks) to download the transcription file once it's ready.</li>
         </ol>
     </div>
     """
