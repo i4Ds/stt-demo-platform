@@ -35,7 +35,7 @@ def save_uploaded_file(file_path):
         )
 
     # Generate a file_name for the file
-    file_name = sanitize(os.path.basename(file_path.name.split(".")[0]))
+    file_name = sanitize(os.path.basename(file_path.name.split(".")[0])).replace(" ", "_")
 
     # Get the file extension
     _, file_extension = os.path.splitext(file_path.name)
@@ -52,10 +52,11 @@ def save_uploaded_file(file_path):
 
 
 def count_files_in_queue(
-    folder_path=os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
+    folder_path=None
 ):
-    if not os.path.exists(folder_path):
-        return 0
+    if folder_path is None:
+        folder_path = os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
+    os.makedirs(folder_path, exist_ok=True)
     files = os.listdir(folder_path)
     return len(files)
 
@@ -91,6 +92,22 @@ def handle_upload(file_path):
         raise gr.Error(f"An error occurred while processing your file: {e}")
 
 
+def extract_audio(input_path):
+    try:
+        # Attempt to load as a video and extract audio
+        clip = VideoFileClip(input_path)
+        if clip.audio is not None:
+            return clip.audio
+    except Exception:
+        pass  # Not a video or no audio stream
+    
+    try:
+        # Attempt to load as an audio file
+        audio = AudioFileClip(input_path)
+        return audio
+    except Exception:
+        raise ValueError("File does not contain audio or is unsupported.")
+
 def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     """
     Convert a video or audio file to MP3 format with a sample rate of 16000 Hz.
@@ -115,16 +132,8 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     # Create the lock file path
     lock_path = f"{output_path}.lock"
 
-    # Determine if the input is a video or audio file
-    _, ext = os.path.splitext(input_path)
-    is_video = ext.lower() in [".mp4", ".avi", ".mov", ".flv", ".wmv"]
-
-    # Load the file
-    if is_video:
-        clip = VideoFileClip(input_path)
-        audio = clip.audio
-    else:
-        audio = AudioFileClip(input_path)
+    # Extract audio from file
+    audio = extract_audio(input_path)
 
     # Create lock file
     with open(lock_path, "w") as lock_file:
@@ -133,10 +142,6 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     # Write the audio to an MP3 file with 16000 Hz sample rate
     audio.write_audiofile(output_path, fps=16000, bitrate="128k")
     audio.close()
-
-    # Close the clips to free up system resources
-    if is_video:
-        clip.close()
 
     # Normalize audio
     audio = AudioSegment.from_file(output_path)
