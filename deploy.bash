@@ -32,8 +32,7 @@ sudo rsync -av "$SOURCE_DIR"/ "$DEST_DIR" >> "$LOG_FILE" 2>&1
 log "Changing ownership of $DEST_DIR to $USER:$GROUP..."
 sudo chown -R "$USER":"$GROUP" "$DEST_DIR"
 
-# (Optional) Set appropriate permissions
-# For example, set directories to 755 and files to 644
+# Set directories to 755 and files to 644
 log "Setting directory permissions to 755 and file permissions to 644..."
 sudo find "$DEST_DIR" -type d -exec chmod 755 {} \;
 sudo find "$DEST_DIR" -type f -exec chmod 644 {} \;

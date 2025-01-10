@@ -1,40 +1,257 @@
 Folder Analysis Summary:
 
-Total number of files: 23
-Total size of files: 233.13 MB
-Date range: 2024-11-29 to 2024-12-02
-Day with most files created: 2024-12-02 (11 files)
-Most common file extension: .mp3 (23 files)
+Total number of files: 184
+Total size of files: 1464.91 MB
+Date range: 2024-12-02 to 2025-01-09
+Day with most files created: 2024-12-31 (22 files)
+Most common file extension: .mp3 (184 files)
 
 Files created per day:
-2024-11-29: 5 files
+2024-12-02: 1 files
 Files:
-  - Roman Klauser Markthalle 2.mp3 (3.90 MB)
-  - Gloor Umfrage traden.mp3 (8.27 MB)
-  - Test Toggl - 29.mp3 (3.31 MB)
-  - very_close.mp3 (0.18 MB)
-  - 19.mp3 (7.17 MB)
-2024-11-30: 6 files
+  - 154_Brugg.mp3 (0.03 MB)
+2024-12-03: 13 files
 Files:
-  - Interview_Gloor.mp3 (8.27 MB)
-  - Badlistrasse.mp3 (7.13 MB)
-  - Photovoice NE - 2024.mp3 (2.01 MB)
-  - interview-sprachforscher.mp3 (15.94 MB)
+  - 2m_left.mp3 (0.18 MB)
+  - 20241202_165208.mp3 (13.61 MB)
+  - InterviewGloor.mp3 (8.27 MB)
+  - 154_Brugg2.mp3 (0.03 MB)
+  - Michael_Lüthi.mp3 (18.38 MB)
+  - Terra_Alta_CEO_Jeannine_Bossart_CH_Doreen_Anka.mp3 (9.55 MB)
+  - InterviewMaksim.mp3 (6.17 MB)
   - Interview_Maksim.mp3 (6.17 MB)
-  - interview-sprachforscher 1.mp3 (15.94 MB)
-2024-12-01: 1 files
+  - Nina.mp3 (8.15 MB)
+  - Test Toggl - 29.mp3 (3.31 MB)
+  - Hanspeter_Wälti_1.mp3 (24.41 MB)
+  - Kapellenweg_3_3.mp3 (12.93 MB)
+  - Carinagasse.mp3 (0.05 MB)
+2024-12-04: 1 files
 Files:
-  - WhatsApp Audio 2024-11-14 um 15.mp3 (18.67 MB)
-2024-12-02: 11 files
+  - Test_Toggl_-_29.mp3 (3.31 MB)
+2024-12-05: 3 files
 Files:
-  - Interview zum Thema Trennungsprozess - Nachsorgephase-20241128_085828-Besprechungsaufzeichnung 1.mp3 (17.93 MB)
+  - VA_Interview_Nadine_Birrer.mp3 (5.86 MB)
+  - 16-9.mp3 (0.42 MB)
+  - New_Recording1_01_angepasst_01.mp3 (18.49 MB)
+2024-12-06: 8 files
+Files:
+  - 240227_1256.mp3 (2.91 MB)
+  - Ul.mp3 (13.80 MB)
+  - 240227_1324.mp3 (36.21 MB)
+  - Hauptstrasse.mp3 (21.19 MB)
+  - Sternegg.mp3 (0.27 MB)
+  - K.mp3 (13.80 MB)
+  - Kapo_1.mp3 (16.18 MB)
+  - 240401_1400.mp3 (29.04 MB)
+2024-12-09: 12 files
+Files:
+  - B23.mp3 (11.26 MB)
+  - 10033.mp3 (0.41 MB)
+  - VID_20241209_141036_1.mp3 (2.31 MB)
+  - 231108_Terra_Alta_ARCHITECT_INTERVIEW_Nov_8_2023__REC00021__Mic2.mp3 (16.48 MB)
+  - 231108_Terra_Alta_ARCHITECT_INTERVIEW_Nov_8_2023_REC00020__Mic1.mp3 (8.58 MB)
+  - JST_Interview_Transcript.mp3 (13.41 MB)
+  - 231108_Terra_Alta_ARCHITECT_INTERVIEW_Nov_8_2023_REC00022__mic2.mp3 (9.32 MB)
+  - WintiCops_Video_1_1.mp3 (0.34 MB)
+  - 10031.mp3 (0.41 MB)
+  - Neue_Aufnahme_13.mp3 (10.71 MB)
+  - 231108Terra_Alta_ARCHITECT_INTERVIEW__Nov_8_2023_REC00019_Mic1.mp3 (0.15 MB)
+  - B24.mp3 (5.70 MB)
+2024-12-10: 3 files
+Files:
+  - swiss_german_test_zurich_short.mp3 (0.05 MB)
+  - Auswahl.mp3 (23.23 MB)
+  - swiss_german_in_zurich.mp3 (0.05 MB)
+2024-12-11: 13 files
+Files:
+  - Kohlenberg.mp3 (34.21 MB)
+  - winticops_video_4_720p.mp3 (0.34 MB)
   - T152_20241114.mp3 (1.72 MB)
-  - TestN.mp3 (8.15 MB)
-  - N_W_.mp3 (8.15 MB)
-  - Aufnahme 1.mp3 (8.15 MB)
-  - T151_20241114.mp3 (1.72 MB)
-  - GossipGrannys.mp3 (31.70 MB)
-  - Aufnahme.mp3 (8.15 MB)
-  - Test.mp3 (8.15 MB)
-  - Hanspeter Wälti.mp3 (24.41 MB)
-  - Interview zum Thema Trennungsprozess - Nachsorgephase-20241128_085828-Besprechungsaufzeichnung.mp3 (17.93 MB)
+  - winticops_video_1_1080p.mp3 (0.34 MB)
+  - winticops_video_6_2160p.mp3 (0.35 MB)
+  - T153_20241114.mp3 (1.72 MB)
+  - T156_20241114.mp3 (1.72 MB)
+  - T157_20241114.mp3 (1.72 MB)
+  - T154_20241114.mp3 (1.72 MB)
+  - winticops_video_3_1440p.mp3 (0.34 MB)
+  - winticops_video_5_1440p.mp3 (0.34 MB)
+  - winticops_video_2_1440p.mp3 (0.34 MB)
+  - T155_20241114.mp3 (1.72 MB)
+2024-12-12: 4 files
+Files:
+  - Interview_Lucas_Baas.mp3 (19.52 MB)
+  - Interview_EW.mp3 (8.47 MB)
+  - VID_20241212_150027.mp3 (4.84 MB)
+  - 04_Alkohol_am_Steuer.mp3 (0.50 MB)
+2024-12-13: 4 files
+Files:
+  - vorstand.mp3 (39.23 MB)
+  - Interview_Simon.mp3 (11.98 MB)
+  - Aufzeichnung.mp3 (0.05 MB)
+  - Interview_Fabian_Burri.mp3 (15.23 MB)
+2024-12-15: 2 files
+Files:
+  - Sebi_Galliker.mp3 (9.97 MB)
+  - Padu_Galliker.mp3 (10.49 MB)
+2024-12-16: 13 files
+Files:
+  - Zielgruppenabend_Block_1_Tim-Bennie.mp3 (11.48 MB)
+  - Gespraech1_Till.mp3 (11.58 MB)
+  - Rebekka_Zielgruppen-Abend_1.mp3 (12.07 MB)
+  - Matthu_1.mp3 (13.03 MB)
+  - Interview_1_frank_emily.mp3 (12.23 MB)
+  - philip_wiederkehr.mp3 (12.77 MB)
+  - Gesprach_1_Jozo.mp3 (12.70 MB)
+  - SRF_Interview_Gesprach_1_Mateo.mp3 (12.58 MB)
+  - gesprach_jenna_1.mp3 (11.66 MB)
+  - Luc_Peyer_Leitfaden_1.mp3 (12.40 MB)
+  - Yannick_Gesprach_1_Noah_Einzelgesprach.mp3 (13.16 MB)
+  - Gesprach_2_David-_SRF_Zielgruppenabend-_Sanja.mp3 (12.55 MB)
+  - Gesprach_1_Samuel_Neil.mp3 (8.44 MB)
+2024-12-17: 4 files
+Files:
+  - Tagesgespraech_radio_AUDI20241216_NR_0030_fdeee30664424e4397fddfbd6d291d9b.mp3 (9.13 MB)
+  - sample.mp3 (0.02 MB)
+  - Patient_2.mp3 (0.18 MB)
+  - Hypnose_Interview.mp3 (29.27 MB)
+2024-12-18: 11 files
+Files:
+  - Anam-dong5-ga.mp3 (12.58 MB)
+  - T169_20241114.mp3 (1.72 MB)
+  - T176_20241114.mp3 (1.72 MB)
+  - Yannick_Gesprach_2_Noah_und_Anisa_Gruppengesprach.mp3 (16.96 MB)
+  - T167_20241114.mp3 (1.72 MB)
+  - T177_20241114.mp3 (1.72 MB)
+  - T166_20241114.mp3 (1.72 MB)
+  - T168_20241114.mp3 (1.72 MB)
+  - T164_20241114.mp3 (1.72 MB)
+  - T165_20241114.mp3 (1.72 MB)
+  - T170_20241114.mp3 (1.72 MB)
+2024-12-19: 7 files
+Files:
+  - Erich_Roth_V2_audio.mp3 (0.50 MB)
+  - audio1130777361.mp3 (0.02 MB)
+  - Bürgerspital.mp3 (28.73 MB)
+  - Neue_Aufnahme_11.mp3 (0.45 MB)
+  - Novartis.mp3 (45.06 MB)
+  - audio1293311714.mp3 (19.47 MB)
+  - Syngenta.mp3 (20.52 MB)
+2024-12-20: 3 files
+Files:
+  - MA-Technik-1.mp3 (20.58 MB)
+  - audio-optimiert.mp3 (1.29 MB)
+  - tmpnlsuhald.mp3 (0.02 MB)
+2024-12-21: 2 files
+Files:
+  - BG02-Wavricka-Hess-Gutknecht-sdm2.mp3 (4.97 MB)
+  - BG01-Wavricka-Hess-Gutknecht-sdm1.mp3 (5.48 MB)
+2024-12-23: 1 files
+Files:
+  - Interview_Mischa_Uehlinger.mp3 (27.57 MB)
+2024-12-24: 5 files
+Files:
+  - 5.mp3 (17.99 MB)
+  - 2.mp3 (17.31 MB)
+  - Audio_Speck.mp3 (16.77 MB)
+  - 6.mp3 (18.32 MB)
+  - Neue_Aufnahme_22.mp3 (16.77 MB)
+2024-12-25: 5 files
+Files:
+  - AUD-20241225-WA0005.mp3 (0.02 MB)
+  - Künsterlergespräch_laut_Teil_1.mp3 (7.70 MB)
+  - Ave_Maria_in_Ab.mp3 (1.71 MB)
+  - 3.mp3 (19.63 MB)
+  - Künsterlergespräch_21.mp3 (30.77 MB)
+2024-12-26: 11 files
+Files:
+  - T179_20241114.mp3 (1.72 MB)
+  - T174_20241114.mp3 (1.72 MB)
+  - T178_20241114.mp3 (1.72 MB)
+  - T180_20241114.mp3 (1.72 MB)
+  - Sitzung_9.mp3 (58.14 MB)
+  - T171_20241114.mp3 (1.72 MB)
+  - T181_20241114.mp3 (1.72 MB)
+  - T172_20241114.mp3 (1.72 MB)
+  - T175_20241114.mp3 (1.72 MB)
+  - T173_20241114.mp3 (1.72 MB)
+  - T182_20241114.mp3 (1.72 MB)
+2024-12-27: 6 files
+Files:
+  - 091224_DE_1.mp3 (23.59 MB)
+  - T184_20241114.mp3 (1.72 MB)
+  - Halter_Tend.mp3 (24.02 MB)
+  - T185_20241114.mp3 (1.62 MB)
+  - T183_20241114.mp3 (1.72 MB)
+  - 091224_DE_2.mp3 (17.03 MB)
+2024-12-29: 1 files
+Files:
+  - temp_audio.mp3 (37.65 MB)
+2024-12-30: 15 files
+Files:
+  - Burgdorf_jung_M_GZMD_1735535591957.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735535644556.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735563038718.mp3 (0.26 MB)
+  - swiss_german_1735530580179.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735535823753.mp3 (0.26 MB)
+  - audio.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735562565217.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735563223800.mp3 (0.26 MB)
+  - Bern_alt_F_GOAU.mp3 (0.28 MB)
+  - Burgdorf_jung_M_GZMD_1735535971813.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735534679552.mp3 (0.26 MB)
+  - bern1.mp3 (0.28 MB)
+  - Burgdorf_jung_M_GZMD_1735534871331.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD.mp3 (0.26 MB)
+  - Burgdorf_jung_M_GZMD_1735535389205.mp3 (0.26 MB)
+2024-12-31: 22 files
+Files:
+  - Panther_Pitch_Version_2_Ton_MP3.mp3 (3.19 MB)
+  - test_1735619603047.mp3 (0.03 MB)
+  - test.mp3 (0.03 MB)
+  - bern_1735621343719.mp3 (0.28 MB)
+  - test_1735619140215.mp3 (0.03 MB)
+  - test_1735618100627.mp3 (0.03 MB)
+  - test_1735619162462.mp3 (0.03 MB)
+  - test_1735618830868.mp3 (0.03 MB)
+  - test_1735617005770.mp3 (0.03 MB)
+  - test_1735617088562.mp3 (0.03 MB)
+  - bern_1735620175064.mp3 (0.28 MB)
+  - test_1735619541383.mp3 (0.03 MB)
+  - bern_1735619860908.mp3 (0.28 MB)
+  - bern_1735620411091.mp3 (0.28 MB)
+  - test_1735619709741.mp3 (0.03 MB)
+  - test_1735618208023.mp3 (0.03 MB)
+  - test_1735618496155.mp3 (0.03 MB)
+  - test_1735618208023sa.mp3 (0.03 MB)
+  - test_1735619438820.mp3 (0.03 MB)
+  - test_1735617205948.mp3 (0.03 MB)
+  - bern12mp3.mp3 (0.28 MB)
+  - test_1735619229783.mp3 (0.03 MB)
+2025-01-01: 1 files
+Files:
+  - Bucher-Lukas_Prozess.mp3 (1.39 MB)
+2025-01-02: 2 files
+Files:
+  - Interview_Heinz_Frei.mp3 (11.04 MB)
+  - Aufzeichnung_6.mp3 (8.90 MB)
+2025-01-05: 2 files
+Files:
+  - MA_Technik_1.mp3 (20.58 MB)
+  - Interview_Gehring.mp3 (9.22 MB)
+2025-01-06: 1 files
+Files:
+  - test-swissgerman-translate.mp3 (0.12 MB)
+2025-01-07: 3 files
+Files:
+  - ggg.mp3 (0.66 MB)
+  - FHNW_Projektarbeit_CIRS_Interview_Fr.mp3 (12.05 MB)
+  - Prana.mp3 (21.35 MB)
+2025-01-08: 3 files
+Files:
+  - Neue_Aufnahme_5.mp3 (20.70 MB)
+  - BG03-Kenngott-Kelber.mp3 (5.87 MB)
+  - 20241119_Interview_Daniel_von_Ruti.mp3 (32.22 MB)
+2025-01-09: 2 files
+Files:
+  - 20230829_Roli_Fischbacher_01.mp3 (20.18 MB)
+  - finformxyuh_podcast_06_540p.mp3 (4.95 MB)

@@ -36,6 +36,8 @@ Three Python services work together to offer the long_api:
 
 ### Deployment
 They are deployed by an user `stt_service`, have an conda enviroment `stt_env` and their deployment is managed by systemd.
+A helpful script for the deployment is `deploy.bash`, which automatically copies files to `/srv/` and changes the ownership to the user.
+However, containers and services have to be restarted manually.
 
 ## Frontend
 

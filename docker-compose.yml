@@ -1,6 +1,6 @@
 services:
   frontend:
-    build: /srv/stt-demo-platform/stt4sg-demo-app
+    build: stt4sg-demo-app
     container_name: frontend
     restart: unless-stopped
     ports:
