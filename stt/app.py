@@ -135,4 +135,4 @@ with app:
         allow_flagging="never",
     )
 
-app.launch(server_name="127.0.0.1", server_port=7863, root_path="/stt")
+app.launch(server_name="127.0.0.1", server_port=7863, root_path="/stt", show_api=False)

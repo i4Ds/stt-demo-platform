@@ -73,6 +73,7 @@ with gr.Blocks(theme=THEME) as app:
     <div class="feedback-box">
         <p><strong>Feedback: </strong> Please tell us what went well and what didn't: <a href="https://forms.office.com/e/uHfVmjsjJr" target="_blank">Feedback Form</a></p>
     </div>
+    <p><strong>The model is not allowed to be used for commercial purposes.</strong></p>
     """
     )
 
@@ -93,4 +94,4 @@ if __name__ == "__main__":
     print(
         "Access the app by navigating to http://127.0.0.1:7861/long_v3 in your web browser."
     )
-    app.launch(server_name="127.0.0.1", server_port=7861, root_path="/long_v3")
+    app.launch(server_name="127.0.0.1", server_port=7861, root_path="/long_v3", show_api=False)

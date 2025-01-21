@@ -188,5 +188,5 @@ if __name__ == "__main__":
         "Access the app by navigating to http://127.0.0.1:7862/long_v3/status?uuid=YOUR_UUID_HERE"
     )
     status_app.launch(
-        server_name="127.0.0.1", server_port=7862, root_path="/long_v3/status"
+        server_name="127.0.0.1", server_port=7862, root_path="/long_v3/status", show_api=False
     )
