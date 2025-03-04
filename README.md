@@ -64,6 +64,7 @@ You can manage the STT services using systemd commands. For example:
 - Stop a service: `sudo systemctl stop stt-transcribe.service`
 - Restart a service: `sudo systemctl restart stt-status.service`
 - Check service status: `sudo systemctl status stt-uploader.service`
+- Edit a service: `sudo nano /etc/systemd/system/stt-uploader.service`
 
 ### Checking Latest Logs
 

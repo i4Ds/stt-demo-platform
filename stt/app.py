@@ -10,7 +10,7 @@ import fcntl
 import time
 
 THEME = gr.themes.Soft()
-MODEL = "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v4"
+MODEL = "i4ds/whisper-large-v3-srg-v2-full-mc-de-sg-corpus"
 FOLDER = "data"
 CSV_PATH = FOLDER + "/data.csv"
 

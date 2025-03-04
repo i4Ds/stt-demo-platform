@@ -26,16 +26,25 @@ class AudioTranscriber:
         self,
         language="de",
         device=None,
+        model_type="i4ds/whisper-large-v3-srg-v2-full-mc-de-sg-corpus",
         sr_rate=16000,
     ):
         self.device = (
             device if device else "cuda" if torch.cuda.is_available() else "cpu"
         )
         self.transcribe_model = whisperx.load_model(
-            "i4ds/whisper4sg-srg-v2-full-mc-de-sg-corpus-v4",
+            model_type,
             self.device,
             compute_type="float16" if torch.cuda.is_available() else "float32",
         )
+
+        # Update feature_size if needed
+        self.transcribe_model.model.feat_kwargs["feature_size"] = (
+            128
+            if "large-v3" in model_type
+            else self.transcribe_model.model.feat_kwargs["feature_size"]
+        )
+
         self.language = language
         self.align_model, self.metadata = whisperx.load_align_model(
             device=self.device,

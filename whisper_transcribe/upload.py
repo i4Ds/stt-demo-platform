@@ -42,7 +42,7 @@ with gr.Blocks(theme=THEME) as app:
         <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Manfred Vogel.</p>
         <p>It combines:</p>
         <ul>
-            <li><a href="https://github.com/openai/whisper" target="_blank">OpenAI/whisper</a> for transcription.</li>
+            <li><a href="https://github.com/openai/whisper" target="_blank">OpenAI/whisper-Large V3</a> for transcription.</li>
             <li><a href="https://github.com/Systran/faster-whisper" target="_blank">Systran/faster-whisper</a> for quantization and performance.</li>
             <li><a href="https://github.com/m-bain/whisperX" target="_blank">m-bain/whisperX</a> for deployment and VAD preprocessing.</li>
 
@@ -94,4 +94,6 @@ if __name__ == "__main__":
     print(
         "Access the app by navigating to http://127.0.0.1:7861/long_v3 in your web browser."
     )
-    app.launch(server_name="127.0.0.1", server_port=7861, root_path="/long_v3", show_api=False)
+    app.launch(
+        server_name="127.0.0.1", server_port=7861, root_path="/long_v3", show_api=False
+    )
