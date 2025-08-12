@@ -7,6 +7,7 @@ import os
 import tempfile
 from sanitize_filename import sanitize
 from pydub import AudioSegment, effects
+import subprocess
 
 UPLOAD_BASE_FOLDER = "data"
 CONVERTED_FOLDER = "converted"
@@ -24,6 +25,7 @@ ALLOWED_EXTENSIONS = {
     ".mp4",
     ".mkv",
 }
+AF_FILTER = "dynaudnorm=f=60:g=12"
 # Create the paths
 os.makedirs(UPLOAD_BASE_FOLDER, exist_ok=True)
 
@@ -35,7 +37,9 @@ def save_uploaded_file(file_path):
         )
 
     # Generate a file_name for the file
-    file_name = sanitize(os.path.basename(file_path.name.split(".")[0])).replace(" ", "_")
+    file_name = sanitize(os.path.basename(file_path.name.split(".")[0])).replace(
+        " ", "_"
+    )
 
     # Get the file extension
     _, file_extension = os.path.splitext(file_path.name)
@@ -51,9 +55,7 @@ def save_uploaded_file(file_path):
     return conversion_result
 
 
-def count_files_in_queue(
-    folder_path=None
-):
+def count_files_in_queue(folder_path=None):
     if folder_path is None:
         folder_path = os.path.join(UPLOAD_BASE_FOLDER, CONVERTED_FOLDER)
     os.makedirs(folder_path, exist_ok=True)
@@ -78,7 +80,9 @@ def handle_upload(file_path):
     try:
         file_name = save_uploaded_file(file_path)
         status_url = f"{BASE_URL}/long_v3/status?uuid={file_name}"
-        return "**✅ File uploaded and converted successfully!** [Check transcription status here]({})".format(status_url)
+        return "**✅ File uploaded and converted successfully!** [Check transcription status here]({})".format(
+            status_url
+        )
 
     except Exception as e:
         # Log the exception details if needed
@@ -100,13 +104,63 @@ def extract_audio(input_path):
             return clip.audio
     except Exception:
         pass  # Not a video or no audio stream
-    
+
     try:
         # Attempt to load as an audio file
         audio = AudioFileClip(input_path)
         return audio
     except Exception:
         raise ValueError("File does not contain audio or is unsupported.")
+
+
+import os
+import subprocess
+
+
+def convert_and_normalize_mp3_16khz(
+    input_path: str, output_path: str, af_filter: str
+) -> str:
+    """
+    Single-pass FFmpeg:
+      - takes any A/V input
+      - applies the given -af filter chain (e.g., dynaudnorm or loudnorm)
+      - resamples to 16 kHz
+      - encodes to MP3
+      - preserves global metadata
+    Writes to output_path (must differ from input_path).
+    """
+    if os.path.abspath(input_path) == os.path.abspath(output_path):
+        raise ValueError(
+            "output_path must be different from input_path (FFmpeg can't edit in place)."
+        )
+    if not os.path.exists(input_path):
+        raise FileNotFoundError(f"Input file {input_path} does not exist.")
+
+    cmd = [
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        input_path,
+        "-vn",  # drop any video tracks (we're producing MP3)
+        "-filter:a",
+        af_filter,  # your normalization chain, e.g. "dynaudnorm=f=60:g=12"
+        "-ar",
+        "16000",  # 16 kHz sample rate
+        "-c:a",
+        "libmp3lame",
+        "-b:a",
+        "128k",
+        output_path,
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    if proc.returncode != 0:
+        # surface the real ffmpeg error; don't swallow it
+        raise gr.Error(
+            f"ffmpeg failed (exit {proc.returncode}):\n{proc.stderr.strip()}"
+        )
+    return output_path
+
 
 def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     """
@@ -132,21 +186,12 @@ def convert_to_mp3_16khz(input_path, base_path=CONVERTED_FOLDER):
     # Create the lock file path
     lock_path = f"{output_path}.lock"
 
-    # Extract audio from file
-    audio = extract_audio(input_path)
-
     # Create lock file
     with open(lock_path, "w") as lock_file:
         lock_file.write("Conversion in progress...")
 
-    # Write the audio to an MP3 file with 16000 Hz sample rate
-    audio.write_audiofile(output_path, fps=16000, bitrate="128k")
-    audio.close()
-
-    # Normalize audio
-    audio = AudioSegment.from_file(output_path)
-    normalized_audio = effects.normalize(audio)
-    normalized_audio.export(output_path, format="mp3")
+    # Normalize the audio to 16kHz
+    output_path = convert_and_normalize_mp3_16khz(input_path, output_path, AF_FILTER)
 
     print(f"Successfully converted {input_path} to MP3 (16000 Hz)")
     print(f"Saved as: {output_path}")

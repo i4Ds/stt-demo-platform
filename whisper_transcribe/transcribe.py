@@ -12,6 +12,13 @@ DEFAULT_ALIGN_MODELS_HF["de"] = "scasutt/wav2vec2-large-xlsr-52_Swiss_German"
 PROCESSED_FOLDER = "processed"
 TRANSCRIBED_FOLDER = "transcribed"
 
+SUBS_TO_REMOVE = [
+    "Das war's für heute.",
+    "Untertitelung des ZDF, 2020",
+    "Die Sendung wird live untertitelt.",
+    "W-R-2-8.",
+]
+
 
 def is_file_locked(file_path):
     lock_path = file_path + ".lock"
@@ -26,7 +33,7 @@ class AudioTranscriber:
         self,
         language="de",
         device=None,
-        model_type="i4ds/whisper-large-v3-srg-v2-full-mc-de-sg-corpus",
+        model_type="i4ds/daily-brook-134",
         sr_rate=16000,
     ):
         self.device = (
@@ -40,9 +47,7 @@ class AudioTranscriber:
 
         # Update feature_size if needed
         self.transcribe_model.model.feat_kwargs["feature_size"] = (
-            128
-            if "large-v3" in model_type
-            else self.transcribe_model.model.feat_kwargs["feature_size"]
+            80 if "large-v2" in model_type else 128
         )
 
         self.language = language
@@ -72,6 +77,14 @@ class AudioTranscriber:
             print_progress=True,
             combined_progress=True,
         )
+
+        # Remove unwanted segments
+        transcription_result["segments"] = [
+            segment
+            for segment in transcription_result["segments"]
+            if segment["text"].casefold()
+            not in [text.casefold() for text in SUBS_TO_REMOVE]
+        ]
 
         aligned_result = whisperx.align(
             transcription_result["segments"],
