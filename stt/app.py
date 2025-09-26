@@ -98,7 +98,7 @@ with app:
     <div class="info-box">
         <p><strong>Transcribe Swiss German audio live in your Browser!</strong></p>
         <p>This demo uses a model trained on Swiss German data by the 
-        <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Manfred Vogel.</p>
+        <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Daniel Perruchoud and Prof. Dr. Manfred Vogel.</p>
         <p>It uses:</p>
         <ul>
             <li><a href="https://github.com/guillaumekln/faster-whisper" target="_blank">SYSTRAN/faster-whisper</a> for fast transcription</li>

@@ -39,7 +39,7 @@ with gr.Blocks(theme=THEME) as app:
     <div class="info-box">
         <p><strong>Transcribe Swiss German audio files of up to 100MB!</strong></p>
         <p>This demo uses a model trained on Swiss German data by the 
-        <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Manfred Vogel.</p>
+        <a href="https://stt4sg.fhnw.ch/" target="_blank">NLP Team at i4ds</a>, supervised by Prof. Dr. Daniel Perruchoud and Prof. Dr. Manfred Vogel.</p>
         <p>It combines:</p>
         <ul>
             <li><a href="https://github.com/openai/whisper" target="_blank">OpenAI/whisper-Large V3</a> for transcription.</li>
