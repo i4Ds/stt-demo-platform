@@ -34,6 +34,12 @@ Three Python services work together to offer the long_api:
    - Managed by `stt.service`
    - Accessible via [https://stt4sg.fhnw.ch/stt/](https://stt4sg.fhnw.ch/stt/)
 
+5. **Short Hidden Transcription Service** (`stt/app_hidden.py`)
+   - Similar to the Short Transcription Service but without a web interface
+   - Managed by `stt_hidden.service`
+   - Accessible via API at [https://stt4sg.fhnw.ch/stt_hidden/](https://stt4sg.fhnw.ch/stt_hidden/)
+   - Can be used to quickly give users access to the latest models without exposing a web interface
+
 ### Deployment
 They are deployed by an user `stt_service`, have an conda enviroment `stt_env` and their deployment is managed by systemd.
 A helpful script for the deployment is `deploy.bash`, which automatically copies files to `/srv/` and changes the ownership to the user.
